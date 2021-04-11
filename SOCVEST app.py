@@ -4,12 +4,9 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
-import st_state_patch
-import SessionState
 import seaborn as sns
 import plotly.express as px
 # Prevent error showing up
-import plotly.graph_objects as go
 st.set_option('deprecation.showPyplotGlobalUse', False)
 import plotly.graph_objects as go
 from textwrap import wrap
