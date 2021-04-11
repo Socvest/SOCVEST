@@ -61,70 +61,6 @@ def read_state_df(engine,session_id):
         df = pd.DataFrame([])
     return df
 
-
-# Chart
-#sns.set_style("whitegrid")
-
-# Get the Data
-# Streamlit knows not to always reload data unless its new data.
-#@st.cache(persist=True)
-# data table for data contents page
-#def contents_page():
-    #table = {
-     #   "COUNTRY": ['United Kingdom']
-      #  "DATA TYPE":
-       # "SOURCE":
-    
-    #table = pd
-
-# import data from csv
-#def COVID_19_Data():
-    #Get headline data
- #   Headline_df = pd.read_csv('./Data/Timeseries/Trends on headline indicators.csv',index_col='Date',parse_dates=True,
-  #                      infer_datetime_format=True)
-
-    # Want to get the numeric data
-   # Headline_numeric_data = Headline_df.select_dtypes(include=[np.float64,np.int64]) 
-    # Want the columns attribute
-    #Headline_numeric_cols = Headline_numeric_data.columns
-    # Get the text dataframe
-    #Headline_text_data = Headline_df.select_dtypes(include='object')
-    #Headline_text_cols = Headline_text_data.columns
-    
-    # Getfuture perception data
-    #Future_expect_df = pd.read_csv('./Data/Timeseries/Future expectations COVID.csv',index_col='Date',parse_dates=True,
-     #                   infer_datetime_format=True)
-    #
-    # Want to get the numeric data
-    #Future_expectation_numeric_data = Future_expect_df.select_dtypes(include=[np.float64,np.int64]) 
-    # Want the columns attribute
-    #Future_expectation_numeric_cols = Future_expectation_numeric_data.columns
-    # Get the text dataframe
-    #Future_expectation_text_data = Headline_df.select_dtypes(include='object')
-    #Future_expectation_text_cols = Future_expectation_text_data.columns
-    
-
-    #return Headline_df, Headline_numeric_cols, Headline_text_cols, Future_expect_df, Future_expectation_numeric_cols, Future_expectation_text_cols
-
-# All data
-
-#Headline_df, Headline_numeric_cols, Headline_text_cols, Future_expect_df, Future_expectation_numeric_cols, Future_expectation_text_cols = COVID_19_Data()
-
-# Columns
-#COVID_19_cols = [*Headline_numeric_cols, *Future_expectation_numeric_cols] # unpack the lists and add them together 
-#Data
-#COVID_19_data = pd.concat([Headline_df,Future_expect_df], axis=1, ignore_index=False)
-# copy of data
-#COVID_19_data_2 = pd.concat([Headline_df,Future_expect_df], axis=1, ignore_index=False)
-
-
-#Creating PostgreSQL client
-#engine = create_engine('postgresql://<username>:<password>@localhost:5432/<database_name>')
-                       
-                        #Creating PostgreSQL client
-#engine = create_engine('postgresql://<username>:<password>@localhost:5432/<database name>')
-
-
 # DATA MANIPULATION - UNIVERSAL
 def reshape_data(data: pd.DataFrame):
     date_cols_regex = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.]((19|20)\\d\\d)$"
@@ -141,7 +77,7 @@ def reshape_data(data: pd.DataFrame):
 @st.cache(persist=True)
 # COVID_19 DATA
 def COVID_19_data():
-    data = pd.read_csv('./Data/Timeseries/Social impact.csv', infer_datetime_format = True)
+    data = pd.read_csv('./Data/COVID-19/Social impact.csv', infer_datetime_format = True)
     return data
 
 #@st.cache(persist=True)
@@ -173,91 +109,8 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
     Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)
     
-    # Second set of choices
-    #question = data['Question'].loc[data['Series'].isin(series)].unique()
-    #Question_choice = Data_filtering[0].selectbox("Question", question)
-    #Survey_Response = data['Survey Response'].loc[data['Question'].isin(question)].unique()
-    #Survey_Response_choice = Data_filtering[1].selectbox("Survey Response", Survey_Response)
-    #People_categories = data['People categories'].loc[data['Survey Response'].isin(Survey_Response)].unique()
-    #People_categories_choice = Data_filtering[1].selectbox("People categories", People_categories)
-    #Response = data['Reponse'].loc[data['People categories'].isin(People_categories)].unique()
-    #Response_choice = Data_filtering[1].selectbox("Reponse", Response)
-    
-    #data col for these choices
-    ##data_col2 = data['Data'][(data['Question']==(Question_choice)) & (data['Survey Response']==(Survey_Response_choice)) & (data['People categories']==(People_categories_choice)) &
-                             #(data['Reponse']==(Response_choice))].unique()
-    
-    
-    
     # return the whole function
     return data_col, Trans_data
-
-
-
-# Choose COVID-19 scaled data
-def Filter_COVID_Non_timeseries_Data():
-    # GET ALL COVID-19 DATA
-    data = COVID_19_data()
-    data = reshape_data(data)
-    Trans_data = Filter_COVID_Timeseries_Data()
-    
-    #create selectbox for date filtering
-    data_filter = st.beta_columns(3)
-        
-    # Create labels to slot filtering sections
-    #Data_filtering = st.beta_columns(3)
-
-    # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
-    # COUNTRY - get all values from the countries column
-    date = Trans_data.index #drop_duplicates(False)
-    # first data filtering choice by country
-    Country_choice = data_filter[0].selectbox("Country", countries)
-    # CATEGORY - get all row values in the category column that are in the country column
-    category = data['Category'].loc[data['Country'] == Country_choice].unique() #Country_choice]
-    Category_choice = Data_filtering[1].selectbox("Category", category)
-    # SERIES - get all series row values that are in the category column
-    series = data.Series.loc[data['Category']==Category_choice].unique()
-    Series_choice = Data_filtering[2].radio('Data Type', series)
-    
-    # Prepare the dataframe that will be used for other types of analysis
-    # Data filteration function - pass data into the function. Filter the data column according to the above choices
-    data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
-
-    # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
-    # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1).reindex(data['Date'].unique(), axis=0)
-    
-    # return the whole function
-    return data_col, Trans_data
-
-
-# View filtered data as dataframe
-#def View_Filtered_Data_DataFrame(data):
-     
-       
-                    
-
-            
-    #Country_choice, Category_choice, Series_choice = Filter_COVID_Data(data)
-    # Users get to choose data from the data column
-    
-       # if choose_theme_category == 'Other':
-    #    st.write("Choose data common to all countries for this theme.")
-     #   Countries = st.beta_columns(3)
-       # Country = Countries[0].multiselect("Country", countries)            
-        #Data_category = Countries[1].multiselect("Data Category", empty_category)
-        #Data_type = data_segments[2].radio('Data Type', ['Timeseries','Non-Timeseries'])
-        #data_items = st.success("Items")
-        #data_items.multiselect("Items", lol)
-
-        # when comparing these data, turn them into the time frame standards - weekly, monthly, annual. Provide the option to 
-        # select or blank out time frame (Have an option to view data on a standardised mode - daily, weekly, montlhy etc or Unique - data that have the same time frames or shape)
-
-      #  data_mix_buttons = st.beta_columns([3,1,1])
-        #confirmation_data = data_mix_buttons[0].button("Show Data")
-       # Hide_data = data_mix_buttons[2].checkbox("Hide Data")
-    
-    #return data_col, Trans_data
 
 
 # Visualisation functions
@@ -400,28 +253,7 @@ def Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colou
 
 #pages available
 st.sidebar.title("SOCVEST")
-#st.sidebar.markdown("#### A partner to the retail investor")
 
-#username, password, database_name
-username = config.username
-password = config.password
-database = config.database_name
-
-#Creating PostgreSQL client
-engine = create_engine('postgresql://' + username + ':' + password+ '@localhost:5432/' + database) 
-#engine = create_engine('postgresql://username:password@localhost:5432/database name')
-
-#Getting session ID
-session_id = get_session_id()
-
-# Create table using the current session
-engine.execute("CREATE TABLE IF NOT EXISTS %s (Variable text)" % (session_id)) 
-len_table =  engine.execute("SELECT COUNT(*) FROM %s" % (session_id));
-len_table = len_table.first()[0]
-if len_table == 0:
-    engine.execute("INSERT INTO %s (Variable) VALUES ('1')" % (session_id));
-
-# st.sidebar.title("Get Started")
 pages = ["About us", "Data and Analysis"] #, "Feedback"]
 
 # About us page
@@ -432,7 +264,7 @@ if choice_1 =="About us":
     title2.title("SOCVEST")
     banner_picture = st.beta_columns(1)
     with banner_picture[0]:
-        st.image("img/Socvest.jpg")
+        st.image("./Data/Front page/Socvest.jpg")
     
     # st.title("SOCVEST")
     themes1 = st.beta_columns([1,3,1])
@@ -450,72 +282,14 @@ if choice_1 =="About us":
     
     st.header("What do we do?")
     st.write("We provide alternative data for world and investment themes to support the retail trader in their investment decision making. We also provide the capacity to run machine learning models for research and predictive probability purposes.")
-    
-    # Map
-    #countries = ['United Kingdom']
-    #df = pd.DataFrame(countries, columns=['Country'])
-    #Map = st.map(df)
-    
+      
     # labels to indicate we do not provide investment adviceh
     st.success("We do not provide investment and financial advice. Data and capabilities provided on this platform is not financial advice")    
     
 elif choice_1 == "Data and Analysis":  
     st.title("Data Exploration")
     st.write("Select a dataset and the range of data visualisation tools available to build your analysis. Once done, press the 'Show Data' below to view the data.")
-    #st.write("For visualisations, choose an option from the Sidebar to start your data analysis.")
-
-    # Data exploration
-    #st.sidebar.title("Data Mix")
-    #st.sidebar.markdown("Choose your dataset")
-    # The option to upload your own data
-    #user_data = st.sidebar.checkbox("Upload your own data")
-    
-    #if user_data == True:
-         # Title detailing what this data set is (User data)
-     #   st.subheader("Your Uploaded data")
-        # want to ensure the error that comes up when we use file uploader does not show up
-       # st.set_option("deprecation.showfileUploaderEncoding", False)
-      #  file_upload = st.sidebar.file_uploader(label="Upload your csv or Excel file",
-       #                                        type = ["csv", "xlsx"], accept_multiple_files=False)
-        # initially file will be empty. So inform them to upload file to view data
-        #show_file = st.empty()
-       # if not file_upload:
-        #    show_file.info("Please upload a file : {} ".format(' '.join(["csv", "xlsx"])))
-
-        # Need to come up with an alternative - if not a datetime series
-        #st.sidebar.markdown("When uploading data, please note that the first column will be automatically transformed into the index column.                               If your data is a timeseries, please ensure your first column is the Date column, formating it as 'yyyy-mm-dd'.")
-
-        # 
-        
-       # global all_columns 
-        #if file_upload is not None:
- #           try:
-  #              df = pd.read_csv(file_upload,index_col=0,parse_dates=True,infer_datetime_format=True)       
-   #         except Exception as e: 
-    #            df = pd.read_excel(file_upload.getvalue(),engine='openpyxl',index_col=0)  
-             # Want to get the numeric data
-     #       all_columns = df.columns.to_list()
-            
-            # display data only when file is uploaded                      
-      #      checkbox_userdata = st.checkbox("Display Data")
-       #     if checkbox_userdata:                    
-        #        user_data_selection = st.multiselect("Choose the columns from your dataset", options=all_columns, key='dataframe')
-                # The dataframe to show the data. Only show dataframe with these columns (Only show data that has the same column length/number of rows)
-         #       Final_user_data = df[user_data_selection]
-
-                # if columns not selected...
-          #      if not user_data_selection:
-           #         st.error("Please select at least one column.")
-            #    else:
-                    # if data is timeseries data, column 1 will be turned into an index label the column as 'Date' and format as follows:
-                    # yyyy-mm-dd or 
-             #       st.dataframe(Final_user_data)
-
-    #st.sidebar.title('Datasets')    
-    #app_data = st.sidebar.radio("Select from available data.", ['Datasets']) #, 'Data mix'])
-    # Datasets
-    #if app_data == 'Datasets':   
-    # data choices
+ 
     Data_choices = st.sidebar.radio("Choose dataset", ['COVID-19', 'Economy', 'Geopolitics','Country','Financial Markets'])
 
     if Data_choices == 'COVID-19':
@@ -524,11 +298,6 @@ elif choice_1 == "Data and Analysis":
         st.subheader(title)
         # Create expander to view/choose data
         with st.beta_expander("Choose Data"):
-
-    #country_specific = st.success("Data Segments")
-    #choose_theme_category = country_specific.radio('Theme Category', ['Country specific', 'Other'])
-
-            #if choose_theme_category == 'Country specific':
             st.write("Choose data unique to a country for this theme.")
             
             # Create labels to slot filtering sections
@@ -545,7 +314,6 @@ elif choice_1 == "Data and Analysis":
             #read_state('size',engine,session_id)
 
             if not Hide_data:
-                st.markdown("##### Social data is from surveys conducted by the UK government")
                 # title to show they can select data
                 DF_Display = st.subheader("View Data Table")
                 # Create a multiselect to choose the columns based on the filtered data
@@ -560,115 +328,7 @@ elif choice_1 == "Data and Analysis":
                 if not Select_cols_dataframe:
                     st.error("Please select at least one column.")
                 else:
-                    st.write(Data_to_select.style.set_precision(2)) 
-                        
-                    #THIS SET UP IS FOR THE NON-TIMESERIES (Trend to the left, stats to the right)
-                    #Additional data in its own container 
-                   # additional_data_title = dataframe_selection[1].markdown("##### Additional Data")
-                    ##extra_filter_one = dataframe_selection[1].selectbox("Question", options = ("Hiya"))
-      #              extra_filter_one = dataframe_container.extra_filter_one
-       #             extra_filter_two = dataframe_selection[1].selectbox("Survey Response", options = ("Hiya"))
-        #            extra_filter_two = dataframe_container.extra_filter_two
-         #           extra_filter_three = dataframe_selection[1].selectbox("People categories", options = ("Hiya"))
-          ##          extra_filter_three = dataframe_container.extra_filter_four
-            #        extra_filter_four = dataframe_selection[1].selectbox("Reponse", options = ("Hiya"))
-             #       extra_filter_four = dataframe_container.extra_filter_four
-                    
-              #      Select_cols_dataframe = dataframe_selection[2].multiselect("Choose columns to Display", options=data_col, key="dataframe 2 choice")
-               #     Data_to_select1= Trans_data[Select_cols_dataframe] # dataframe to select from
-                #    if not Select_cols_dataframe:
-                 #       dataframe_selection[2].error("Please select at least one column.")
-                  #  else:
-                   #     dataframe_selection[2].write(Data_to_select1) #.style.set_precision(2))
-                    
-               # else:
-                    # subheader
-                   # Non_timeseries_DF_Disp = st.subheader("View Data Table")
-                    
-                    # Create further filters for showing other data
-                    #non_timeseries_data = st.beta_columns([2,5])
-                    #non_timeseries_data_2 = st.beta_columns(3)
-
-                    #Data 
-                    #data = COVID_19_data()
-                    #data = reshape_data(data) #unpivoted data
-                    
-                    #Date filter                   
-                  #  nT_date = data.Date.loc[data.Series==Series_choice]
-                   # nT_date_filter = non_timeseries_data[0].selectbox("Choose date", options = nT_date)
-                    #Question filter
-                    #Question_NT = data.Question.loc[data.Date==nT_date]
-                    #Question_NT_1 = Question_NT.unique() #.fillna("") #sorts#.unique()
-                    #Question_nT_Filter = non_timeseries_data[1].selectbox("Choose Question", options=Question_NT) 
-                    # Survey response
-                    #Survey_NT = data['Survey Response'].loc[data.Question==Question_NT]
-                    #Survey_nT_Filter = non_timeseries_data_2[0].multiselect("Choose Survey Response", options=Survey_NT) #	Survey Response	People categories	Reponse
-                    #.loc[data['Question'] == nT_date]#.unique()
-                    
-                    
-                    
-                    # NON TIMESERIES DATA
-                    # After you remove the unhide button what will show, some few criterias. If the timeseries in not ticked, then show something else else, show the dataframe.
-               # if not Series_choice == "Non-timeseries":
-                #    # create container
-                 #   dataframe_container = st.beta_container()
-                  #  dataframe_selection = st.beta_columns([8,2,8]) 
-                    
-                    # title to show they can select data
-                   # DF_Display = st.subheader("View Data Table")
-            #        # Create a multiselect to choose the columns based on the filtered data
-             ##       Select_cols_dataframe = dataframe_selection[0].multiselect("Choose columns to Display", options=data_col, key="dataframe choice") # distinct selectbox
-            #        Data_to_select= Trans_data[Select_cols_dataframe] # dataframe to select from
-            #        if not Select_cols_dataframe:
-             #           dataframe_selection[0].error("Please select at least one column.")
-             #       else:
-              #          dataframe_selection[0].write(Data_to_select.style.set_precision(2)) 
-                        
-                    #THIS SET UP IS FOR THE NON-TIMESERIES (Trend to the left, stats to the right)
-                    #Additional data in its own container 
-           #         additional_data_title = dataframe_selection[1].markdown("##### Additional Data")
-            #        extra_filter_one = dataframe_selection[1].selectbox("Question", options = ("Hiya"))
-             #       extra_filter_one = dataframe_container.extra_filter_one
-              #      extra_filter_two = dataframe_selection[1].selectbox("Survey Response", options = ("Hiya"))
-               ##     extra_filter_two = dataframe_container.extra_filter_two
-           #         extra_filter_three = dataframe_selection[1].selectbox("People categories", options = ("Hiya"))
-            #        extra_filter_three = dataframe_container.extra_filter_four
-            #        extra_filter_four = dataframe_selection[1].selectbox("Reponse", options = ("Hiya"))
-            #        extra_filter_four = dataframe_container.extra_filter_four
-                    
-             #       Select_cols_dataframe = dataframe_selection[2].multiselect("Choose columns to Display", options=data_col, key="dataframe 2 choice")
-              #      Data_to_select1= Trans_data[Select_cols_dataframe] # dataframe to select from
-               #     if not Select_cols_dataframe:
-                ##        dataframe_selection[2].error("Please select at least one column.")
-                 #   else:
-                #        dataframe_selection[2].write(Data_to_select1) #.style.set_precision(2))
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
-    # COUNTRY - get all values from the countries column
-    #date = Trans_data.index #drop_duplicates(False)
-    # first data filtering choice by country
-    #Country_choice = data_filter[0].selectbox("Country", countries)
-    # CATEGORY - get all row values in the category column that are in the country column
-    #category = data['Category'].loc[data['Country'] == Country_choice].unique() #Country_choice]
-    #Category_choice = Data_filtering[1].selectbox("Category", category)
-    # SERIES - get all series row values that are in the category column
-    #series = data.Series.loc[data['Category']==Category_choice].unique()
-    #Series_choice = Data_filtering[2].radio('Data Type', series)
-    
-    # Prepare the dataframe that will be used for other types of analysis
-    # Data filteration function - pass data into the function. Filter the data column according to the above choices
-    #data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
-
-    # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
-    # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    #Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1).reindex(data['Date'].unique(), axis=0)
-                    
+                    st.write(Data_to_select.style.set_precision(2))                    
         # CHARTS
         st.sidebar.title("Visualisation")
         # Show charts for selected data
@@ -770,47 +430,6 @@ elif choice_1 == "Data and Analysis":
 
                 else:
                     Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colour, annot)
-                    
-                #across_time = st.checkbox("Variables across time")
-                #if across_time:
-                    # load data to view in charts
-                    # date/time
-                    # Data_to_select_indexed = Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries) 
-                
-                    #axis_data = Heatmap_timeseries_index(data_to_analyse, Heatmap_dataframe_timeseries)
-                    
-                    
-                    # Data to show on graph
-                    # Data to select
-                 #   variables_to_analyse = st.multiselect("Choose data", options=data_col)
-                  #  dates_to_analyse = st.selectbox("Choose date range", options=axis_data)
-                    # Dataframe to choose data from
-                   # Heatmap_dataframe_timeseries_variables = Trans_data[variables_to_analyse]
-                    
-                    
-                    # turn date time into just date
-                    # Dates = pd.to_datetime(Heatmap_dataframe_timeseries_variables.index).strftime('%d-%m-%Y')
-
-                    #labels
-                    #labels = Heatmap_dataframe_timeseries_variables.columns
-                    #wrapped_labels = ['\n'.join(wrap(l, 20)) for l in labels] 
-
-                    # Data to select
-                    # data_to_analyse = st.multiselect("Choose data", options=COVID_19_cols)
-                    # pivot data/turn it into sns format
-                   # Pivot_data_heatmap = pd.pivot_table(Heatmap_dataframe_timeseries_variables, columns=variables_to_analyse, values=axis_data)
-
-                    #f, ax2 = plt.subplots(figsize=(20, 10))  
-                    # show data
-                    #ax2 = sns.heatmap(Pivot_data_heatmap) #, linewidths=5, linecolor="pink", yticklabels = wrapped_labels, square=True)
-                    
-                    #st.pyplot()
-
-                    # set labels
-                    #ax2.set_xticklabels(ax2.get_xticklabels(), rotation=45, horizontalalignment='right')
-                    #ax2.set_yticklabels(ax2.get_yticklabels(), rotation=0, horizontalalignment='right')
-                    
-                    
         
         # Data Relationship
         Subheader_data_relationship = Visualisation_segment.subheader("Data Relationships")
@@ -839,13 +458,7 @@ elif choice_1 == "Data and Analysis":
                 scatter_choices_placeholder = st.empty()
                 chart_placeholder = st.empty()
                 
-               # @st.cache(allow_output_mutation=True, suppress_st_warning=True)
-            
-                #session_state = SessionState.get(axes_options = axes_placeholder.beta_columns(3))
-                
-                # session_state = SessionState.get(
-                
-                # select data for default graph
+               
                 axes_options = st.beta_columns(4)
 
                 # Options for default chart
@@ -898,216 +511,6 @@ elif choice_1 == "Data and Analysis":
                 st.pyplot(chart, use_container_width=True)
                 
                 Advanced_plots = st.beta_columns([4,4,3,3,5])
-                
-               # Advanced_plots_opt = Advanced_plots[4].checkbox("Advanced Chart")
-                
-              #  if Advanced_plots_opt:
-                    
-               #     advanced_plot_axes =  st.beta_columns(4)
-                #    advanced_plot_scatter_choices = st.beta_columns([4,4,4,4,1])
-                 #   chart_plot = st.beta_columns([30,2])
-                    
-                    #select x-axis
-               #     Adv_select_box_X = advanced_plot_axes[0].selectbox('Select x-axis', data_col)
-                    #select y-axis
-             #       Adv_select_box_Y = advanced_plot_axes[1].selectbox('Select y-axis', data_col)
-                    # Control dimensions of chart
-              #      Adv_color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'winterred', 'grey']
-
-               #     Adv_colour = advanced_plot_axes[2].selectbox('Choose color', options=Adv_color)
-
-                #    Adv_height = advanced_plot_scatter_choices[0].slider('Height of chart', min_value=0.0, max_value=30.0, step=.1, value=8.0)
-                        # Rati0
-                 #   Adv_ratio_chart = advanced_plot_scatter_choices[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7)
-                        # Space
-                  #  Adv_space = advanced_plot_scatter_choices[2].slider('Space', min_value=0.0, max_value=1.0, step=.1, value=.4)
-                        # Show cuts/shapes of plots
-                 #   Adv_alpha = advanced_plot_scatter_choices[3].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4) 
-                        # Default settings
-                  #  Adv_default_options = advanced_plot_scatter_choices[4].button('Default')
-                        # Additional options
-                    #Adv_options = Advanced_plots_opt[4].checkbox('Additional Options')
-                    
-                    # view both charts
-                    #edge_colour = advanced_plot_scatter_choices[3].selectbox('Edge Color', options=Adv_color)
-                    
-                    
-                    
-                    #chart = sns.JointGrid(x=Adv_select_box_X, y=Adv_select_box_Y, data=Scatter_graph_data,  ratio=Adv_ratio_chart, space=Adv_space, height=Adv_height) #, , size=select_box_size) 
-                    #chart.plot(sns.scatterplot, sns.histplot,alpha=Adv_alpha, edgecolor=edge_colour) #, edgecolor=".2", linewidth=.5), alpha=alpha, ratio=8, marginal_ticks=True)
-                   # if st.radio("Chart_options", ['scatter', 'blue']) =='blue':
-                     #   chart.plot_joint(sns.scatterplot, s=100, alpha=.5)
-                    #chart.plot_marginals(sns.histplot, kde=True)
-                    #chart.sns.kdeplot(y=Adv_select_box_Y, linewidth=2, ax=chart.ax_marg_y)
-                    #chart.plot_joint(sns.regplot) #, s=100, alpha=.5) plot(sns.regplot,
-                    
-                    #plt.colorbar(mappable=Adv_select_box_Y)
-                
-                    #sns.scatterplot(color='blue')
-                    #jointplot(x=select_box_X, y=select_box_Y, data=Scatter_graph_data,  hue=select_box_hue, s=select_box_size, alpha=alpha, ratio=8, marginal_ticks=True) #, xlim=(-15,15), ylim=(-15,15)) #.set_axis_labels(wrapped_labels)#, yticklabels = wrapped_labels) #, marker="o", color = colour); #, s=select_box_size, alpha=.6, marker="o", color = 'green');
-                    #plt.subplots_adjust(left=0.2, right=0.8, top=0.8, bottom=0.2)  # shrink fig so cbar is visible
-                    #cbar_ax = chart.fig.add_axes([.85, .25, .05, .4])  # x, y, width, height
-                    #cb1  = mpl.colorbar.ColorbarBase(cbar_ax,orientation='vertical')
-
-                    #chart.ax_joint.set_ylabel(chart.wrapped_labels, fontweight='bold')
-                    #chart.ax_marg_x.set_axis_off()
-                    #chart.ax_marg_y.set_axis_off()
-                    # Define axes limit
-                    #chart.ax_marg_x.set_xlim(0, 3000)
-                    #chart.ax_marg_y.set_ylim(0, 1200)
-
-                    #plt.figure(figsize=(16, 6))
-                    #chart_plot[0].pyplot(chart, use_container_width=True)
-                    
-                
-                # CREATE A MORE ADVANCED CHART USING JOINT GRID
-                
-               # if options:
-                    
-                    
-                #    kind_opt = ['kde', 'reg']
-                 #   kind = scatter_choices[0].selectbox('Additional Options', options=kind_opt)
-
-                #labels
-                #labels = Scatter_graph_data.columns
-                #wrapped_labels = ['\n'.join(wrap(l, 20)) for l in labels] 
-
-                # Option to turn off and on additional axis
-                # additional_axis = scatter_choices[0].radio('Add additional axis plot', ['Yes', 'No'])
-
-
-                # what category influences the other dataset
-                #select_box_hue = scatter_choices[2].selectbox('Category', data_col)
-                # what category influences the other dataset
-                #select_box_size = scatter_choices[3].slider('Size of plots', min_value=1, max_value=100, value=35) #range(1,1000))
-                
-                #chart_placeholder = st.empty()
-
-                # Chart
-                #@st.cache(suppress_st_warning=True, allow_output_mutation=True)
-               # def chart(select_box_X, select_box_Y, Scatter_graph_data, alpha, height, ratio_chart, space, color):
-                  #  chart = sns.jointplot(x=select_box_X, 
-                   #                       y=select_box_Y, 
-                    #                      data = Scatter_graph_data,
-                     #                     kind=kind,
-                      #                    height=height, 
-                       #                   ratio=ratio_chart, 
-                        #                  space=space, 
-                         #                 xlim=(-0.01,1.01), 
-                          #                ylim=(-0.01,1.01),
-                           #               color=color)
-                                         # marginal_kws={'color':'red'}) #, color=color) # hue=select_box_hue, s=select_box_size,  marginal_ticks=True)
-
-                    # chart_placeholder.pyplot(chart, use_container_width=True)
-                
-                # chart(select_box_X, select_box_Y, Scatter_graph_data, alpha, height, ratio_chart, space, color)
-                
-                #session_state.checkboxed = False
-                
-                # the above is the initial state
-                #s0 = st.SessionState()
-                #if not s:
-                 #   s.pressed_first_button = False
-                    
-                #if st.button("Default"): #or s.pressed_first_button:
-                 #   s.pressed_first_button = True # preserve the info that you hit a button between runs
-           # try: 
-                
-                #s = st.State() 
-                
-                # session_state = SessionState.get(axes_options = axes_placeholder.beta_columns(3))
-               # session_state = SessionState.get(axes_options = axes_placeholder.beta_columns(3)) 
-                # once button is pushed, load new format data
-                
-                
-                #if default_options: # or session_state.default_options:
-                    #session_state.default_options=False
-                    
-                 #   try:
-                    
-                        # create a session for the below choices so that it won't have to reinitialise
-                        #session_state = SessionState.get(axes_options = axes_placeholder.beta_columns(3)) 
-                                                         #(scatter_choices = scatter_choices_placeholder.beta_columns([4,4,4,4,1]))
-                        #session_state.axes_options
-
-                        # select data for default graph
-                  #      axes_options = axes_placeholder.beta_columns(3)
-                        #Options for default chart
-                   #     scatter_choices = scatter_choices_placeholder.beta_columns([4,4,4,4,1])
-
-                        #session_state.checkboxed = True
-
-                        #select x-axis
-                    #    select_box_X = axes_options[0].selectbox('Select x-axis', data_col)
-                        #default_placeholder.select_box_X
-                        #select y-axis
-                     #   select_box_Y = axes_options[1].selectbox('Select y-axis', data_col)
-                        #session_state.checkboxed = True
-
-                        # Control dimensions of chart
-                      #  color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'winterred', 'grey']
-
-                       # color = axes_options[2].selectbox('Choose color', options=color)
-
-                        #height = scatter_choices[0].slider('Height of chart', min_value=0.0, max_value=30.0, step=.1, value=8.0)
-                        # Rati
-                    #    ratio_chart = scatter_choices[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7)
-                        # Space
-                   #     space = scatter_choices[2].slider('Space', min_value=0.0, max_value=1.0, step=.1, value=.4)
-                        # Show cuts/shapes of plots
-                #        alpha = scatter_choices[3].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4) 
-                        # Default settings
-                 #       default_options = scatter_choices[4].button('Default')
-                        # Additional options
-                  #      options = scatter_choices[4].checkbox('Additional Options')
-                        
-                    
-                   #     chart = sns.jointplot(x=select_box_X, 
-                    #                        y=select_box_Y, 
-                     #                       data=Scatter_graph_data,
-                      #                      alpha=.4, 
-                       #                     height=8.0, 
-                        #                    ratio=7, 
-                         #                   space=.4, 
-                          #                  xlim=(-0.01,1.01), 
-                           #                 ylim=(-0.01,1.01), 
-                            #                color=color)                   
-                       # chart_placeholder.pyplot(chart, use_container_width=True)
-                    #except:
-                     #   pass
-                    
-                  
-              
-
-
-                   
-                    
-                    
-
-
-                    
-               
-                
-                
-                
-                
-                #Default chart
-                #g = sns.JointGrid()
-                #x, y = select_box_X, select_box_Y
-                #sns.scatterplot(x=select_box_X, y=select_box_Y, data=Scatter_graph_data, ec="b", fc="none", s=100, linewidth=1.5, ax=g.ax_joint)
-                #sns.histplot(x=select_box_X, data=Scatter_graph_data, fill=False, linewidth=2, ax=g.ax_marg_x)
-                #sns.kdeplot(y=select_box_Y, data=Scatter_graph_data, linewidth=2, ax=g.ax_marg_y)
-                
-                #if additional_axis == 'Yes':
-                 #   chart = sns.JointGrid(x=select_box_X, y=select_box_Y, data=Scatter_graph_data,  hue=select_box_hue, s=select_box_size, alpha=alpha, height=8, ratio=6, marginal_ticks=True)
-                    #chart.plot_joint(sns.regplot)
-                  #  chart.ax_marg_x.set_axis_off()
-                   # chart.ax_marg_y.set_axis_off()
-                #elif additional_axis == 'No':
-                  #  chart = sns.jointplot(x=select_box_X, y=select_box_Y, data=Scatter_graph_data,  hue=select_box_hue, s=select_box_size, alpha=alpha, height=8, ratio=6, marginal_ticks=True)
-          
-
-                        
 
                 # Correlation
         Correlation = Visualisation_segment.checkbox("Correlation")
@@ -1250,176 +653,33 @@ elif choice_1 == "Data and Analysis":
                     f, ax = plt.subplots(figsize=(width,height)) 
                     sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     st.pyplot()
-                    
-                # ADVANCED CHARTS
-                 # Bin width
-                #bin_width = Hist_options[1].number_input("Select custom bin width", min_value=None, max_value=100, value=5, step=1)
-                # Bin range
-                #bin_range_1 = Hist_options[2].number_input("Select custom bin range begin", min_value=None, max_value=100, value=5, step=1)
-                #bin_range_2 = Hist_options[3].number_input("Select custom bin range end", min_value=None, max_value=100, value=5, step=1)
-
-        # Bar Chart
-       # if Visualisation_segment.checkbox("Bar Charts") == True:
-        #     # subtitle for Bar chart
-         #   st.subheader("Bar Chart Visualisation")
-          #  show_Bar_chart = st.beta_expander("Show Chart")
-           # with show_Bar_chart:
-                
-#                #Chart options (X,Y)
- #               Bar_Chart_choices = st.beta_columns(3)
-  #                              
-   #             X_Chart_choices = Bar_Chart_choices[0].selectbox(label="Choose X-axis", options=data_col)
-    #            
-     #           Y_Chart_Choices = Bar_Chart_choices[1].selectbox(label="Choose Y-axis", options=data_col)
-      #          
-       #         Colour_options = Bar_Chart_choices[2].selectbox(label='Choose colour', options=data_col)
-        #        
-         #       size_chart_bar = Bar_Chart_choices[0].slider('Choose Height of Chart', min_value=0, max_value=1000, step=10, value=400)
-          #      
-           #     width_char_bar = Bar_Chart_choices[1].slider('Choose Width of Chart', min_value=0, max_value=1000, step=10, value=400)
-                
-                # Only show dataframe with these columns
-            #    dataframe_cols = Trans_data[data_col] #reset_index()
-                
-                #Columns for chart options
-                # Shape_of_bar_chart = st.beta_columns(5)
-                
-#                Bar_chart = Bar_Chart_choices[2].radio("Bar Chart Options",('Vertical', 'horizontal'))    
- #               if Bar_chart == 'Vertical':    
-                    
-                    #st.write(dataframe_cols2)
-
-                    #print(dataframe_cols2)
-
-  #                  fig = px.bar(dataframe_cols, x=X_Chart_choices, y=Y_Chart_Choices, color=Y_Chart_Choices)
-#
- #                   fig.update_layout(showlegend=False)        
-  #                  fig.update_layout(margin_autoexpand=False)
-   #                 fig.update_traces(hovertemplate=None)
-    #                fig.update_layout(hovermode="x unified")
-
-     #               height = size_chart_bar
-      #              width = width_char_bar
-       #             fig.update_layout(
-        #            width=width,
-         #           height=height)
-
- #                   st.plotly_chart(fig, use_container_width=True)
-#
-  #              if Bar_chart == 'horizontal':
-                    #Bar_chart_selection = st.selectbox(label = "Choose feature", options=data_col)
-                    # Only show dataframe with these columns
-                    # Only show dataframe with these columns
-   #                 dataframe_cols = Trans_data[Bar_chart_selection] #reset_index()
-
-    #                fig = px.bar(dataframe_cols, x=Bar_chart_selection, y=dataframe_cols.index, color=Bar_chart_selection,orientation='h')
-
-     #               fig.update_layout(margin_autoexpand=False)
-      #              fig.update_traces(hovertemplate=None)
-       #             fig.update_layout(hovermode="x unified")
-
-        #            height = 590
-         #           fig.update_layout(
-          #          width=350,
-           #         height=height)
-
-            #        st.plotly_chart(fig, use_container_width=True)
-
-        
-        # MACHINE LEARNING
-       # st.sidebar.title("Machine Learning")
-        #Machine_Learning = st.sidebar.beta_expander("Choose Machine Learning Model")
-        #Linear_regression = Machine_Learning.checkbox("Linear Regression")
-        
-        #if Linear_regression:
-         #   title_linear_regression = "Linear Regression"
-          #  Linear_reg_title = st.title(title_linear_regression)
-           # st.subheader("Test the Normality of the data")
-            #st.write("Linear Regression tends to work best normally distributed data. Below are three methods to help you determine the normality of the data.")
-            #Trans_data.hist(bins=3)
-            
-
-
-
-
-            
-                
-                
-                           
+ 
                 
             
     if Data_choices == 'Economy':
         title = Data_choices = 'Economy'
         st.subheader(title)
         st.markdown("## Coming soon...")
-        #Hide_data = Choose_Data()
-
-            
-            
-            #if country_choice == 'United Kingdom':
                 
     
     if Data_choices == 'Geopolitics':
         title = Data_choices = 'Geopolitics'
         st.subheader(title)
         st.markdown("## Coming soon...")
-        #Hide_data = Choose_Data()
     
-    
-   # if app_data == 'Data mix':
-    #    # Data available on the platform
-     #   st.subheader("Available Datasets")
-        
-      #  Hide_data = Choose_Data()
-        
-        
-        
-            
-        # Display dataframe data when you tick the box
-        #checkbox = st.button("Show Data")
-       # if confirmation_data:
-            # Can select what columns to look at. 
-        #    Columns_select = st.multiselect(label="Select Columns to view",
-         #                                   options=COVID_19_cols)      
-            # Only show dataframe with these columns (Only show data that has the same column length/number of rows)
-          #  dataframe_cols = COVID_19_data[Columns_select]
-            
-             # columns to be transformed to 2 decimal places
-            #Two_decimal_places = dataframe_cols.style.format({'Life satisfaction': '{:.02f}', 'Worthwhile': '{:2f}', 'Happiness yesterday':  '{:2f}', 'Anxious yesterday':  '{:2f}',
-                                                            #  '% with high levels of anxiety': '{:.2f}'})
-
-            # if columns not selected...
-           # if not Columns_select:
-            #    st.error("Please select at least one column.")
-
-            #else:
-             #   st.dataframe(dataframe_cols.style.set_precision(2))   
-    
-    
-    # Data graphs
-    
-   
-   #     charts_display = st.sidebar.checkbox("Timeseries")
-
-    #    if charts_display==True:
-            # Title indicating this is a timeseries
-      #      st.subheader("Time Series Analysis")
-     #       
+ 
     
     if Data_choices == 'Country':
         title = Data_choices = 'Country'
         st.subheader(title)
         st.markdown("## Coming soon...")
-        #Hide_data = Choose_Data()
         
         
     if Data_choices == 'Financial Markets':
         title = Data_choices = 'Financial Markets'
         st.subheader(title)
         st.markdown("## Coming soon...")
-        #Hide_data = Choose_Data()
-        
-    #if choice_1 =="Feedback":
+       
         
     
         
