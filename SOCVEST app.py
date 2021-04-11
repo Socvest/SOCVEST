@@ -15,11 +15,7 @@ import matplotlib as mpl
 import urllib
 # for min_max scaling
 from sklearn.preprocessing import MinMaxScaler
-import streamlit.components.v1 as components
-import psycopg2
-from sqlalchemy import create_engine
 from streamlit.report_thread import get_report_ctx
-import config
 st.set_page_config(page_title='SOCVEST') #,layout="wide")
 
 hide_streamlit_style = """
