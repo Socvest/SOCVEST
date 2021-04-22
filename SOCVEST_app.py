@@ -199,9 +199,9 @@ def Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries):
     Data_to_select_no_index = Heatmap_dataframe_timeseries.reset_index()
 
     # Create new dataframes from the data column
-    Data_to_select_no_index['Year'] = Data_to_select_no_index.Date.year
-    Data_to_select_no_index['Month'] = Data_to_select_no_index.Date.month
-    Data_to_select_no_index['Day'] = Data_to_select_no_index.Date.day
+    Data_to_select_no_index['Year'] = Data_to_select_no_index.Date.dt.year
+    Data_to_select_no_index['Month'] = Data_to_select_no_index.Date.dt.month
+    Data_to_select_no_index['Day'] = Data_to_select_no_index.Date.dt.day
     # set new indexes
     Data_to_select_no_index.set_index(['Day','Month', 'Year'], inplace=True)
 
