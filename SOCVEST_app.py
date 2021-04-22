@@ -81,17 +81,18 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     
             
     # date column sorting out
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce').dt.datetime
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce').dt.date
     
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
     Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     
     # data 2
-    #data['Date'] = pd.to_
-    
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
+    # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
+    Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
-    return data_col, Trans_data
+    return data_col, Trans_data, Trans_data2
 
 
 # Visualisation functions
@@ -286,7 +287,7 @@ elif choice_1 == "Data and Analysis":
 
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
-            data_col, Trans_data = Filter_COVID_Timeseries_Data(Data_filtering)
+            data_col, Trans_data,Trans_data2 = Filter_COVID_Timeseries_Data(Data_filtering)
             
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
