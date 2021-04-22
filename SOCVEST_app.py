@@ -386,7 +386,7 @@ elif choice_1 == "Data and Analysis":
             with Show_heatmap_times:           
             
                 # Data to select
-                data_to_analyse = st.selectbox("Choose data", options=data_col2)
+                data_to_analyse = st.selectbox("Choose data", options=data_col)
                 # Dataframe to choose data from
                 Heatmap_dataframe_timeseries = Trans_data2[data_to_analyse]
                 
