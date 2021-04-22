@@ -606,9 +606,9 @@ elif choice_1 == "Data and Analysis":
                 KDE_plot = Hist_options[0].selectbox("Show KDE Plot", options=(True, False))
                 # Horizontal/vertical
                 horizontal_vertical = Hist_options[2].radio("Choose Orientation", ['Horizontal','Vertical'], index=1)
-                
+                # Colour
                 colour_hist = ['indianred', 'indigo']
-                colour = Hist_options[1].selectbox("Colour", options=colour_hist)
+                colour = Hist_options1[0].selectbox("Colour", options=colour_hist)
                 # Statistics
                 stats = ["count", "frequency", "density", "probability"]
                 count = Hist_options1[1].selectbox('Choose stats to view', options=stats, index=2)
@@ -617,17 +617,16 @@ elif choice_1 == "Data and Analysis":
                 visual_stat = ['bars', 'step', 'poly']
                 element = Hist_options1[3].selectbox('Visual of stat', options=visual_stat)
                 cumulative = Hist_options1[0].selectbox('Show Cumulation data', options=(True,False))
-                histogram_slider = Hist_options1[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
-                
+                                
                 # Size control
-                height = Hist_options1[2].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
-                width = Hist_options1[3].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
+                histogram_slider = Hist_options1[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
+                height = Hist_options1[1].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
+                width = Hist_options1[2].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
             
                 # select feature from select box
                 histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
 
-                
-                 # Data to view
+                # Data to view
                 COVID_19_data_Hist = Trans_data[histogram_data_selection]
                 
                 if not horizontal_vertical == 'Vertical':
@@ -636,7 +635,6 @@ elif choice_1 == "Data and Analysis":
                     sns.histplot(y=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     st.pyplot()
                 else:
-                    
                     f, ax = plt.subplots(figsize=(width,height)) 
                     sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     st.pyplot()
