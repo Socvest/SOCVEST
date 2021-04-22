@@ -34,28 +34,6 @@ def get_session_id():
     session_id = '_id_' + session_id
     return session_id
 
-# Where the '%s', we be replaced with the values after '%'. 
-# for this, we want to save the state of the columns and their respective values
-def write_state(column,value,engine,session_id):
-    engine.execute("UPDATE %s SET %s='%s'" % (session_id,column,value))
-
-# we want to save the state of the dataframe    
-def write_state_df(df,engine,session_id):
-    df.to_sql('%s' % (session_id),engine,index=False,if_exists='replace',chunksize=1000)
-
-# We want to read the state of the column values
-def read_state(column,engine,session_id):
-    state_var = engine.execute("SELECT %s FROM %s" % (column,session_id))
-    state_var = state_var.first()[0]
-    return state_var
-
-# we want to read the state of the dataframe 
-def read_state_df(engine,session_id):
-    try:
-        df = pd.read_sql_table(session_id,con=engine)
-    except:
-        df = pd.DataFrame([])
-    return df
 
 # DATA MANIPULATION - UNIVERSAL
 def reshape_data(data: pd.DataFrame):
@@ -73,7 +51,7 @@ def reshape_data(data: pd.DataFrame):
 @st.cache(persist=True)
 # COVID_19 DATA
 def COVID_19_data():
-    data = pd.read_csv('./Data/COVID-19/Social impact.csv', infer_datetime_format = True)
+    data = pd.read_csv('./Data/COVID-19/Social Impact.csv', infer_datetime_format = True)
     return data
 
 #@st.cache(persist=True)
