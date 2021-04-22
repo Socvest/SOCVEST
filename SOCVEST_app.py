@@ -81,7 +81,8 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
             
     # date column sorting out
-    date = data.Date.date() 
+    date = data.Date
+    date = date.date() 
     #datetime.datetime.strptime(when, '%Y-%m-%d').date()
 
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
