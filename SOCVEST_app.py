@@ -440,11 +440,11 @@ elif choice_1 == "Data and Analysis":
                 chart_placeholder = st.empty()
                 
                
-                chart_options = st.beta_columns(4)
+                chart_options = st.beta_columns(3)
                 axes_options = st.beta_columns(2)
 
                 # Options for default chart
-                scatter_choices = st.beta_columns([4,4,4,4,1])
+                scatter_choices = st.beta_columns(3)
 
                 # User_choices_placeholder = st.empty()
 
@@ -454,24 +454,24 @@ elif choice_1 == "Data and Analysis":
                 select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key=2) 
                 # Control dimensions of chart
                 color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
-                color = chart_options[2].selectbox('Choose chart color', options=color, key=1)
+                color = chart_options[0].selectbox('Choose chart color', options=color, key=1)
                 # Edge colors
                 edge_col = ['navy','red', 'blue']
-                edge_col_opt = chart_options[3].selectbox('Choose edge plots colour', options=edge_col)
+                edge_col_opt = chart_options[1].selectbox('Choose edge plots colour', options=edge_col)
                 # Height
-                height = scatter_choices[1].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=9.0, key=1)
+                height = scatter_choices[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=9.0, key=1)
                 # Ratio
                 #ratio_chart = scatter_choices[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7, key=2)
                 # Space
-                space = scatter_choices[2].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key=3)
+                space = scatter_choices[1].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key=3)
                 # Show cuts/shapes of plots
-                alpha = scatter_choices[3].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
+                alpha = scatter_choices[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
                 # Default settings
                 #default_options = scatter_choices[4].button('Default', key=1)
                 
                 bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
                 # graph background colour
-                Background_colr = scatter_choices[0].selectbox('Choose Background Colour', options=bkc)
+                Background_colr = chart_options[2].selectbox('Choose Background Colour', options=bkc)
                 
                 
                 #ticks for margin plots
