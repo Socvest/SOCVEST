@@ -79,19 +79,48 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # Prepare the dataframe that will be used for other types of analysis
     # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
     data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
+    # for data2
+    data_col2 = 
             
     # date column sorting out
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce').dt.date
     
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)
-    # second version for other charts
-    Trans_data2=data2.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)            
+    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)           
     
     # return the whole function
-    return data_col, Trans_data, Trans_data2
+    return data_col, Trans_data
 
+# data 2
+def Filter_COVID_Timeseries_Data2(Data_filtering):
+    # GET ALL COVID-19 DATA
+    data = COVID_19_data()
+    data = reshape_data(data)
+    
+    # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
+    # COUNTRY - get all values from the countries column
+    countries = data.Country.unique()
+    #countries = countries.unique() #drop_duplicates(False)
+    # first data filtering choice by country
+    Country_choice = Data_filtering[0].selectbox("Country", countries)
+    # CATEGORY - get all row values in the category column that are in the country column
+    category = data['Category'].loc[data['Country'] == Country_choice].unique() 
+    Category_choice = Data_filtering[1].selectbox("Category", category)
+    # SERIES - get all series row values that are in the category column
+    series = data.Series.loc[data['Category']==Category_choice].unique()
+    Series_choice = Data_filtering[2].radio('Data Type', series)
+    
+    # Prepare the dataframe that will be used for other types of analysis
+    # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+    data_col2 = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()          
+    
+    # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
+    # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
+    Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)
+    
+    # return the whole function
+    return data_col2, Trans_data2
 
 # Visualisation functions
 def Line_Area_chart(Dataframe_to_display, Columns_to_show):
@@ -285,7 +314,9 @@ elif choice_1 == "Data and Analysis":
 
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
-            data_col, Trans_data, Trans_data2 = Filter_COVID_Timeseries_Data(Data_filtering)
+            data_col, Trans_data = Filter_COVID_Timeseries_Data(Data_filtering)
+            data_col2, Trans_data2 = Filter_COVID_Timeseries_Data2(Data_filtering)
+            
 
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
@@ -384,7 +415,7 @@ elif choice_1 == "Data and Analysis":
             with Show_heatmap_times:           
             
                 # Data to select
-                data_to_analyse = st.selectbox("Choose data", options=data_col)
+                data_to_analyse = st.selectbox("Choose data", options=data_col2)
                 # Dataframe to choose data from
                 Heatmap_dataframe_timeseries = Trans_data2[data_to_analyse]
                 
