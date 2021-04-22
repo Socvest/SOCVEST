@@ -619,15 +619,15 @@ elif choice_1 == "Data and Analysis":
                 cumulative = Hist_options1[0].selectbox('Show Cumulation data', options=(True,False))
                                 
                 # Size control
-                histogram_slider = Hist_options1[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
                 height = Hist_options1[1].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
                 width = Hist_options1[2].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
+                histogram_slider = Hist_options1[3].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
             
                 # select feature from select box
                 histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
 
                 # Data to view
-                COVID_19_data_Hist = Trans_data[histogram_data_selection]
+                COVID_19_data_Hist = Trans_data[data_col]
                 
                 if not horizontal_vertical == 'Vertical':
                     
