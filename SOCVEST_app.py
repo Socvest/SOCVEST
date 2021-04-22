@@ -79,8 +79,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # Prepare the dataframe that will be used for other types of analysis
     # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
     data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
-    # for data2
-    data_col2 = 
+    
             
     # date column sorting out
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce').dt.date
