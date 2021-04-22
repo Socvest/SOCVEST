@@ -52,7 +52,7 @@ def reshape_data(data: pd.DataFrame):
 # COVID_19 DATA
 def COVID_19_data():
     custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m-%d)
-    data = pd.read_csv('./Data/COVID-19/Social Impact.csv',  parse_dates=True, infer_datetime_format=True, date_parser=custom_date_parser) 
+    data = pd.read_csv('./Data/COVID-19/Social Impact.csv',  parse_dates=['Date'], infer_datetime_format=True, date_parser=custom_date_parser) 
     return data
 
 #@st.cache(persist=True)
