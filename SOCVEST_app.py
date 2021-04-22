@@ -606,8 +606,7 @@ elif choice_1 == "Data and Analysis":
                 KDE_plot = Hist_options[0].selectbox("Show KDE Plot", options=(True, False))
                 # Horizontal/vertical
                 horizontal_vertical = Hist_options[2].radio("Choose Orientation", ['Horizontal','Vertical'], index=1)
-                # select feature from select box
-                histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
+                
                 colour_hist = ['indianred', 'indigo']
                 colour = Hist_options[1].selectbox("Colour", options=colour_hist)
                 # Statistics
@@ -617,16 +616,19 @@ elif choice_1 == "Data and Analysis":
                 fill = Hist_options1[2].selectbox('Fill bar plots', options=(True, False))
                 visual_stat = ['bars', 'step', 'poly']
                 element = Hist_options1[3].selectbox('Visual of stat', options=visual_stat)
-                cumulative = Hist_options[0].selectbox('Show Cumulation data', options=(True,False))
+                cumulative = Hist_options1[0].selectbox('Show Cumulation data', options=(True,False))
                 histogram_slider = Hist_options1[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
                 
                 # Size control
-                height = Hist_options[2].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
-                width = Hist_options[3].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
+                height = Hist_options1[2].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
+                width = Hist_options1[3].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
+            
+                # select feature from select box
+                histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
 
                 
                  # Data to view
-                COVID_19_data_Hist = Trans_data[data_col]
+                COVID_19_data_Hist = Trans_data[histogram_data_selection]
                 
                 if not horizontal_vertical == 'Vertical':
                     
