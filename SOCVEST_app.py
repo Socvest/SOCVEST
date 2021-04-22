@@ -440,7 +440,8 @@ elif choice_1 == "Data and Analysis":
                 chart_placeholder = st.empty()
                 
                
-                axes_options = st.beta_columns(4)
+                chart_options = st.beta_columns(4)
+                axes_options = st.beta_columns(2)
 
                 # Options for default chart
                 scatter_choices = st.beta_columns([4,4,4,4,1])
@@ -453,10 +454,10 @@ elif choice_1 == "Data and Analysis":
                 select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key=2) 
                 # Control dimensions of chart
                 color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
-                color = axes_options[2].selectbox('Choose chart color', options=color, key=1)
+                color = chart_options[2].selectbox('Choose chart color', options=color, key=1)
                 # Edge colors
                 edge_col = ['navy','red', 'blue']
-                edge_col_opt = axes_options[3].selectbox('Choose edge plots colour', options=edge_col)
+                edge_col_opt = chart_options[3].selectbox('Choose edge plots colour', options=edge_col)
                 # Height
                 height = scatter_choices[1].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=9.0, key=1)
                 # Ratio
