@@ -323,11 +323,11 @@ elif choice_1 == "Data and Analysis":
             show_line_chart = st.beta_expander("Show Chart")
             # if the show line chart shows
             with show_line_chart:
+                # new label for line chart options
+                line_chart_options = st.beta_columns(3)  
                 # Create a multiselect to choose the columns based on the filtered data
                 Data_to_show_line = st.multiselect("Choose Data to Display", options=data_col, key='linechart')
                 Dataframe_to_display_line_chart = Trans_data[Data_to_show_line] # dataframe to select from
-                # new label for line chart options
-                line_chart_options = st.beta_columns(3)  
                 # button to switch between line and area charts
                 line_chart = line_chart_options[0].radio("Chart Options", ["Line Chart", "Area Chart"], index=0)
                 #area_chart = line_chart_options[1].radio("", ['Area Chart'])
@@ -405,7 +405,6 @@ elif choice_1 == "Data and Analysis":
                 # if columns not selected...
                 if not data_to_analyse:
                     st.error("Please select at least one column.")
-
                 else:
                     Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colour, annot)
         
