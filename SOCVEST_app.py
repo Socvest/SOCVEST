@@ -593,30 +593,33 @@ elif choice_1 == "Data and Analysis":
             with show_Histogram_chart:
                 
                 # columns for flexible options
-                Hist_options = st.beta_columns(4)
+                Hist_options = st.beta_columns(3)
+                Hist_options1 = st.beta_columns(4)
+                data_choice = st.beta_columns(1)
                 
                 bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
                 # graph background colour
-                Background_col = Hist_options[2].selectbox('Choose Background Colour', options=bkc, key=1)
+                Background_col = Hist_options[1].selectbox('Choose Background Colour', options=bkc, key=1)
                 sns.set_style(Background_col)
                 
                 # KDE argument
-                KDE_plot = Hist_options[1].selectbox("Show KDE Plot", options=(True, False))
+                KDE_plot = Hist_options[0].selectbox("Show KDE Plot", options=(True, False))
                 # Horizontal/vertical
-                horizontal_vertical = Hist_options[3].radio("Choose Orientation", ['Horizontal','Vertical'], index=1)
+                horizontal_vertical = Hist_options[2].radio("Choose Orientation", ['Horizontal','Vertical'], index=1)
                 # select feature from select box
-                histogram_data_selection = Hist_options[0].selectbox("Choose feature to observe", options=data_col)
-                histogram_slider = Hist_options[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
-                # Statistics
-                stats = ["count", "frequency", "density", "probability"]
-                count = Hist_options[1].selectbox('Choose stats to view', options=stats, index=2)
-                # styling
-                fill = Hist_options[2].selectbox('Fill bar plots', options=(True, False))
-                visual_stat = ['bars', 'step', 'poly']
-                element = Hist_options[3].selectbox('Visual of stat', options=visual_stat)
-                cumulative = Hist_options[0].selectbox('Show Cumulation data', options=(True,False))
+                histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
                 colour_hist = ['indianred', 'indigo']
                 colour = Hist_options[1].selectbox("Colour", options=colour_hist)
+                # Statistics
+                stats = ["count", "frequency", "density", "probability"]
+                count = Hist_options1[1].selectbox('Choose stats to view', options=stats, index=2)
+                # styling
+                fill = Hist_options1[2].selectbox('Fill bar plots', options=(True, False))
+                visual_stat = ['bars', 'step', 'poly']
+                element = Hist_options1[3].selectbox('Visual of stat', options=visual_stat)
+                cumulative = Hist_options[0].selectbox('Show Cumulation data', options=(True,False))
+                histogram_slider = Hist_options1[0].slider(label="Number of bins to display", min_value=5, max_value= 30, value = 15)
+                
                 # Size control
                 height = Hist_options[2].slider("Chart height", min_value=5, max_value=30, value=5, step=1)
                 width = Hist_options[3].slider("Chart width", min_value=5, max_value=30, value=8, step=1)
