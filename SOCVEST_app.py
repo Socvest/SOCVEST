@@ -17,6 +17,7 @@ import urllib
 from sklearn.preprocessing import MinMaxScaler
 from streamlit.report_thread import get_report_ctx
 st.set_page_config(page_title='SOCVEST') #,layout="wide")
+import datetime
 
 hide_streamlit_style = """
             <style>
