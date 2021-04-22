@@ -61,7 +61,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # GET ALL COVID-19 DATA
     data = COVID_19_data()
     data = reshape_data(data)
-        
+    data2 = data    
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
@@ -86,9 +86,11 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
     Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)
+    # second version for other charts
+    Trans_data2=data2.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0)            
     
     # return the whole function
-    return data_col, Trans_data
+    return data_col, Trans_data, Trans_data2
 
 
 # Visualisation functions
@@ -384,7 +386,7 @@ elif choice_1 == "Data and Analysis":
                 # Data to select
                 data_to_analyse = st.selectbox("Choose data", options=data_col)
                 # Dataframe to choose data from
-                Heatmap_dataframe_timeseries = Trans_data[data_to_analyse]
+                Heatmap_dataframe_timeseries = Trans_data2[data_to_analyse]
                 
                 # new label for line chart options
                 Axis_data = st.beta_columns([3,3,3,3])   
