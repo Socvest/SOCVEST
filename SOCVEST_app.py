@@ -270,7 +270,7 @@ if choice_1 =="About us":
     
 elif choice_1 == "Data and Analysis":  
     st.title("Data Exploration")
-    st.write("Select a dataset and the range of data visualisation tools available to build your analysis. Once done, press the 'Show Data' below to view the data.")
+    st.write("Select a dataset and the range of data visualisation tools available to build your analysis. Once done, uncheck the 'Hide Data' below to view the data.")
  
     Data_choices = st.sidebar.radio("Choose dataset", ['COVID-19', 'Economy', 'Geopolitics','Country','Financial Markets'])
 
