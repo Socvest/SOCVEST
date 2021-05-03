@@ -412,6 +412,23 @@ elif choice_1 == "Data and Analysis":
                 else:
                     Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colour, annot)
         
+        bar_chart = Visualisation_segment.checkbox("Bar Chart") 
+        if bar_chart == True:
+            st.subheader("Bar Chart")
+            
+            bar_chart_section = st.beta_expander("Show Chart")
+            
+            with bar_chart_section:
+                # Data to select
+                data_to_analyse = st.multiselect("Choose data", options=data_col)
+                # Dataframe to choose data from
+                Heatmap_dataframe_timeseries = Trans_data[data_to_analyse]
+
+                if not data_to_analyse:
+                    st.error("Please insert at least one Data Point")
+                else:
+                    st.bar_chart(data=Heatmap_dataframe_timeseries, width=480, height=450, use_container_width=True)
+        
         # Data Relationship
         Subheader_data_relationship = Visualisation_segment.subheader("Data Relationships")
         
@@ -431,7 +448,7 @@ elif choice_1 == "Data and Analysis":
                 # Scale data
                 scaled_dataframe= scaling.fit_transform(Trans_data)
                 # create new dataframe with scaled data
-                scaled_dataframe = pd.DataFrame(scaled_dataframe, index=Trans_data.index, columns=data_col)
+                scaled_dataframe = pd.DataFrame(scaled_dataframe, index=Trans_data.index, columns=Trans_data.columns)
                 
                 Scatter_graph_data = scaled_dataframe[data_col]
                 
@@ -497,9 +514,8 @@ elif choice_1 == "Data and Analysis":
                 # Correlation
         Correlation = Visualisation_segment.checkbox("Correlation")
         if Correlation:
-            st.subheader("Correlation") 
             # subtitle
-            st.subheader("Correlation Chart Visualisation")
+            st.subheader("Correlation Chart ")
             show_scatter_chart = st.beta_expander("Show Chart")
             #Show_corr = st.checkbox("Show Correlation Diagram")
             with show_scatter_chart:
