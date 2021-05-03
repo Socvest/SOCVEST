@@ -46,7 +46,7 @@ def reshape_data(data: pd.DataFrame):
     data_unpivoted['Date']=pd.to_datetime(data_unpivoted['Date'], infer_datetime_format=True)
     data_unpivoted['Value']=data_unpivoted['Value'].astype(float)
     #data_unpivoted = data_unpivoted.sort_values(['Country', 'Category', 'Series', 'Data','Date'])
-    data_unpivoted.loc[:,'Value'].fillna(method='bfill', inplace = True)
+    data_unpivoted.loc[:,'Value'].fillna(0, inplace = True)
     return data_unpivoted
 
 #@st.cache(persist=True)
