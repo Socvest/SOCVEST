@@ -480,7 +480,7 @@ elif choice_1 == "Data and Analysis":
                 edge_col = ['navy','red', 'blue']
                 edge_col_opt = chart_options[1].selectbox('Choose edge plots colour', options=edge_col)
                 # Height
-                height = scatter_choices[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=9.0, key=1)
+                height = scatter_choices[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=11.5, key=1)
                 # Ratio
                 #ratio_chart = scatter_choices[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7, key=2)
                 # Space
