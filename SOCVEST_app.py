@@ -447,7 +447,7 @@ elif choice_1 == "Data and Analysis":
                 st.write("*Note that data has been scaled to allow for better ploting outcomes")
                 # define data that will be used for analysis (the whole dataset)
                 scaling = MinMaxScaler()
-                Scatter_data_ = Trans_data.fillna(0)
+                Scatter_data_ = Trans_data.fillna("")
                 
             
                         
