@@ -449,8 +449,6 @@ elif choice_1 == "Data and Analysis":
                 scaling = MinMaxScaler()
                 Scatter_data_ = Trans_data.fillna(0)
                 
-            
-                        
                 # Scale data
                 scaled_dataframe= scaling.fit_transform(Scatter_data_)
                 # create new dataframe with scaled data
