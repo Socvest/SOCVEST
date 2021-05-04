@@ -49,7 +49,7 @@ def reshape_data(data: pd.DataFrame):
     data_unpivoted.loc[:,'Value'].fillna(0, inplace = True)
     return data_unpivoted
 
-#@st.cache(persist=True)
+@st.cache(persist=True)
 # COVID_19 DATA
 def COVID_19_data():
     data = pd.read_csv('./Data/COVID-19/Social Impact.csv', infer_datetime_format=True)   
