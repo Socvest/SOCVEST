@@ -19,13 +19,13 @@ from streamlit.report_thread import get_report_ctx
 st.set_page_config(page_title='SOCVEST') #,layout="wide")
 import datetime
 
-hide_streamlit_style = """
-            <style>
+#hide_streamlit_style = """
+ #           <style>
             #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+  #          footer {visibility: hidden;}
+   ##         </style>
+     #       """
+#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
 
