@@ -195,7 +195,7 @@ def Line_Chart(Dataframe_to_display, Columns_to_show):
     
     return st.plotly_chart(plotly_fig,use_container_width=True)
 
-#@st.cache(persist=True)
+@st.cache(persist=True)
 def Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries):
     # Extract day, month and year from dataframe table. First reset index
     Data_to_select_no_index = Heatmap_dataframe_timeseries.reset_index()
