@@ -46,7 +46,7 @@ def reshape_data(data: pd.DataFrame):
     data_unpivoted['Date']=pd.to_datetime(data_unpivoted['Date'], infer_datetime_format=True)
     data_unpivoted['Value']=data_unpivoted['Value'].astype(float)
     #data_unpivoted = data_unpivoted.sort_values(['Country', 'Category', 'Series', 'Data','Date'])
-    data_unpivoted.loc[:,'Value'].fillna(0, inplace = True)
+    #data_unpivoted.loc[:,'Value'].fillna(0, inplace = True)
     return data_unpivoted
 
 @st.cache(persist=True)
@@ -85,12 +85,12 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     
     # data 2
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value', fill_value='').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
     return data_col, Trans_data, Trans_data2
 
@@ -306,7 +306,7 @@ elif choice_1 == "Data and Analysis":
                 #write_state('Select_cols_dataframe',Select_cols_dataframe, engine, session_id)
                 #Select_cols_dataframe = read_state('Select_cols_dataframe',engine,session_id)
                 
-                Data_to_select= Trans_data[Select_cols_dataframe] # dataframe to select from
+                Data_to_select= Trans_data[Select_cols_dataframe].fillna("") # dataframe to select from
                 #write_state_df(Data_to_select,engine,session_id + '_df')
                 
                 if not Select_cols_dataframe:
@@ -447,8 +447,12 @@ elif choice_1 == "Data and Analysis":
                 st.write("*Note that data has been scaled to allow for better ploting outcomes")
                 # define data that will be used for analysis (the whole dataset)
                 scaling = MinMaxScaler()
+                Scatter_data_ = Trans_data.fillna(0)
+                
+            
+                        
                 # Scale data
-                scaled_dataframe= scaling.fit_transform(Trans_data)
+                scaled_dataframe= scaling.fit_transform(Scatter_data_)
                 # create new dataframe with scaled data
                 scaled_dataframe = pd.DataFrame(scaled_dataframe, index=Trans_data.index, columns=Trans_data.columns)
                 
