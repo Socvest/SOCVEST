@@ -104,6 +104,7 @@ def Line_Area_chart(Dataframe_to_display, Columns_to_show):
     plotly_fig_area.update_layout(margin_autoexpand=True) # prevent size from changing because of legend or anything
     plotly_fig_area.update_traces(mode="lines", hovertemplate=None)
     plotly_fig_area.update_layout(hovermode="x unified")
+    plotly_fig_area.update_traces(connectgaps=True)
 
     plotly_fig_area.update_layout(legend=dict(
                       orientation = "h",
@@ -153,6 +154,7 @@ def Line_Chart(Dataframe_to_display, Columns_to_show):
     plotly_fig.update_layout(margin_autoexpand=True) # prevent size from changing because of legend or anything
     #plotly_fig.update_traces(mode="lines", hovertemplate=None)
     plotly_fig.update_layout(hovermode="x unified")
+    plotly_fig.update_traces(connectgaps=True)
 
     plotly_fig.update_layout(legend=dict(
                       orientation = "h",
