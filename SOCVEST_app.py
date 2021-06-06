@@ -383,7 +383,7 @@ if choice_1 =="About us":
     title2.title("SOCVEST")
     banner_picture = st.beta_columns(1)
     with banner_picture[0]:
-        st.image("img/Socvest.jpg")
+        st.image("Data/Front Page/Socvest.jpg")
     
     # st.title("SOCVEST")
     themes1 = st.beta_columns([1,3,1])
