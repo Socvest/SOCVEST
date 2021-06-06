@@ -55,13 +55,12 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     #data = reshape_data(data)   
     
     # date column sorting out
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True) #, format = '%Y-%m-%d') #.dt.date
+    #data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True) #, format = '%Y-%m-%d') #.dt.date
     data['Date'] = data['Date'].dt.date
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
     countries = data.Country.unique()
-    #countries = countries.unique() #drop_duplicates(False)
     # first data filtering choice by country
     Country_choice = Data_filtering[0].selectbox("Country", countries)
     # CATEGORY - get all row values in the category column that are in the country column
