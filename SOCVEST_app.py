@@ -18,6 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 from streamlit.report_thread import get_report_ctx
 st.set_page_config(page_title='SOCVEST') #,layout="wide")
 import datetime
+import calendar
 
 hide_streamlit_style = """
             <style>
@@ -25,7 +26,7 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
 
@@ -49,10 +50,10 @@ def reshape_data(data: pd.DataFrame):
     #data_unpivoted.loc[:,'Value'].fillna(0, inplace = True)
     return data_unpivoted
 
-@st.cache(persist=True)
+@st.cache(persist=True, allow_output_mutation=True)
 # COVID_19 DATA
 def COVID_19_data():
-    data = pd.read_csv('./Data/COVID-19/Social Impact.csv', infer_datetime_format=True)   
+    data = pd.read_csv('Data/Timeseries/Data/COVID-19/COVID data1.csv', infer_datetime_format = True, parse_dates=True)  
     return data
 
 #@st.cache(persist=True)
@@ -60,7 +61,10 @@ def COVID_19_data():
 def Filter_COVID_Timeseries_Data(Data_filtering):
     # GET ALL COVID-19 DATA
     data = COVID_19_data()
-    data = reshape_data(data)   
+    #data = reshape_data(data)   
+    
+    # date column sorting out
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True) #.dt.date
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
@@ -73,26 +77,27 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     Category_choice = Data_filtering[1].selectbox("Category", category)
     # SERIES - get all series row values that are in the category column
     series = data.Series.loc[data['Category']==Category_choice].unique()
-    Series_choice = Data_filtering[2].radio('Data Type', series)
-    
+    Series_choice = Data_filtering[2].radio('Sequential Data type', series)
+    # Data type     
+    data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+    Data_type_choice = Data_filtering[0].selectbox("Data Type", options = data_type)
     # Prepare the dataframe that will be used for other types of analysis
     # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-    data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()
+    data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
     
             
-    # date column sorting out
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce').dt.date
+   
     
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Value').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    Trans_data=data.pivot(index='Date', columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
     
     # data 2
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
+   # data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    #Trans_data2=data.pivot_table(index=['Date'], columns='Data', values='Value').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
-    return data_col, Trans_data, Trans_data2
+    return data_col, Trans_data, data_type #, Trans_data2
 
 
 # Visualisation functions
@@ -195,14 +200,153 @@ def Line_Chart(Dataframe_to_display, Columns_to_show):
     
     return st.plotly_chart(plotly_fig,use_container_width=True)
 
+# Visualisation functions
+def Line_Area_chart_single_view(Dataframe_to_display, Columns_to_show):
+    
+    titles = '<br>'.join(wrap(Columns_to_show, 90))
+    
+    plotly_fig_area = px.area(data_frame=Dataframe_to_display,x=Dataframe_to_display.index,y=Dataframe_to_display, title=titles) #Columns_to_show)
+
+    # Legend settings
+    plotly_fig_area.update_layout(showlegend=False)        
+    plotly_fig_area.update_layout(margin_autoexpand=True) # prevent size from changing because of legend or anything
+    plotly_fig_area.update_traces(mode="lines", hovertemplate=None)
+    plotly_fig_area.update_layout(hovermode="x unified")
+    plotly_fig_area.update_traces(connectgaps=True)
+    plotly_fig_area.update_layout(title_font_family="Times New Roman")
+    plotly_fig_area.update_layout(title_font_size=17)
+    plotly_fig_area.update_layout(
+    title={
+        'text': titles,
+        'y':0.94,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+
+    plotly_fig_area.update_layout(legend=dict(
+                      orientation = "h",
+                      yanchor="bottom",
+                      y=-.85,
+                      xanchor="right",
+                      x=1.0
+                    )) 
+
+
+    height = 690
+    plotly_fig_area.update_layout(
+    autosize=False,
+    width=970,
+    height=height)
+    
+     # Date range
+    plotly_fig_area.update_xaxes(rangeselector=dict(
+                                buttons=list([
+                                dict(count=7, label="7d", step="day", stepmode="backward"),
+                                dict(count=1, label="1m", step="month", stepmode="backward"),
+                                dict(count=6, label="6m", step="month", stepmode="backward"),
+                                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                                dict(count=1, label="1y", step="year", stepmode="backward"),
+                                dict(step="all")
+                                ])), rangeslider_visible=True)
+
+    # Background colour
+    #plotly_fig.update_layout(paper_bgcolor="white") # Change background of the 'page' not the graph
+    plotly_fig_area.layout.plot_bgcolor="white"
+    # area colour
+    
+    
+    return st.plotly_chart(plotly_fig_area,use_container_width=True)
+
+
+# Line chart using the filtered data
+def Line_Chart_single_view(Dataframe_to_display, Columns_to_show):  
+    ### - https://community.plotly.com/t/how-to-break-time-series-lines-at-data-gaps/645 (fix gaps plots for line charts)
+    
+    
+    titles = '<br>'.join(wrap(Columns_to_show, 90)) #for l in Columns_to_show]
+    
+    #wrapped_labels = [ Columns_to_show.replace(' ', '\n')] # for label in Columns_to_show ]
+    
+    #st.write(wrapped_labels)
+    
+    #st.write(Columns_to_show)
+    
+    #st.markdown("<h1 style='text-align: center; color: red;'>"Columns_to_show</h1>", unsafe_allow_html=True)
+    
+    plotly_fig = px.line(data_frame=Dataframe_to_display,x=Dataframe_to_display.index,y=Dataframe_to_display, title=titles)
+                                            #width=780, height=830) # Get data from the dataframe with selected columns, choose the x axis as the index of the dataframe, y axis is the                                             data that will be multiselected
+    # Date graph
+
+
+    # Legend settings
+    plotly_fig.update_layout(showlegend=False)        
+    plotly_fig.update_layout(margin_autoexpand=True) # prevent size from changing because of legend or anything
+    #plotly_fig.update_traces(mode="lines", hovertemplate=None)
+    plotly_fig.update_layout(hovermode="x unified")
+    plotly_fig.update_traces(connectgaps=True)
+    plotly_fig.update_layout(title_font_family="Times New Roman")
+    plotly_fig.update_layout(title_font_size=17)
+    plotly_fig.update_layout(
+    title={
+        'text': titles,
+        'y':0.94,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+
+    ##plotly_fig.update_layout(legend=dict(
+      #                orientation = "h",
+       #               yanchor="bottom",
+        #              y=-.75,
+         #             xanchor="right",
+          #            x=1.0
+           #         )) 
+
+
+    height = 690
+    plotly_fig.update_layout(
+    autosize=False,
+    width=910,
+    height=height)
+
+    # Date range
+    plotly_fig.update_xaxes(rangeselector=dict(
+                                buttons=list([
+                                dict(count=7, label="7d", step="day", stepmode="backward"),
+                                dict(count=1, label="1m", step="month", stepmode="backward"),
+                                dict(count=6, label="6m", step="month", stepmode="backward"),
+                                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                                dict(count=1, label="1y", step="year", stepmode="backward"),
+                                dict(step="all")
+                                ])), rangeslider_visible=True)
+    
+
+    #grids
+    plotly_fig.update_xaxes(showgrid=False)  # Removes X-axis grid lines
+    plotly_fig.update_yaxes(showgrid=False)  # Removes Y-axis grid lines
+
+    # Background colour
+    # plotly_fig.update_layout(paper_bgcolor="white") # Change background of the 'page' not the graph
+    plotly_fig.layout.plot_bgcolor="white"
+    
+    
+    #fig3 = go.Figure(data=plotly_fig.data, connectgaps=True)
+    
+    #connectgaps=True
+    
+    return st.plotly_chart(plotly_fig,use_container_width=True)
+
+
 @st.cache(persist=True)
 def Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries):
     # Extract day, month and year from dataframe table. First reset index
     Data_to_select_no_index = Heatmap_dataframe_timeseries.reset_index()
 
+    
     # Create new dataframes from the data column
     Data_to_select_no_index['Year'] = Data_to_select_no_index.Date.dt.year
     Data_to_select_no_index['Month'] = Data_to_select_no_index.Date.dt.month
+    Data_to_select_no_index['Month'] = Data_to_select_no_index['Month'].apply(lambda x: calendar.month_abbr[x])
     Data_to_select_no_index['Day'] = Data_to_select_no_index.Date.dt.day
     # set new indexes
     Data_to_select_no_index.set_index(['Day','Month', 'Year'], inplace=True)
@@ -248,7 +392,7 @@ if choice_1 =="About us":
     title2.title("SOCVEST")
     banner_picture = st.beta_columns(1)
     with banner_picture[0]:
-        st.image("./Data/Front page/Socvest.jpg")
+        st.image("img/Socvest.jpg")
     
     # st.title("SOCVEST")
     themes1 = st.beta_columns([1,3,1])
@@ -289,7 +433,7 @@ elif choice_1 == "Data and Analysis":
 
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
-            data_col, Trans_data,Trans_data2 = Filter_COVID_Timeseries_Data(Data_filtering)
+            data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
             
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
@@ -328,54 +472,108 @@ elif choice_1 == "Data and Analysis":
             st.subheader("Line Chart Visualisation")
             show_line_chart = st.beta_expander("Show Chart")
             # if the show line chart shows
-            with show_line_chart:
+            with show_line_chart:               
+                                
                 # new label for line chart options
-                line_chart_options = st.beta_columns(3)  
-                # Create a multiselect to choose the columns based on the filtered data
-                Data_to_show_line = st.multiselect("Choose Data to Display", options=data_col, key='linechart')
-                Dataframe_to_display_line_chart = Trans_data[Data_to_show_line] # dataframe to select from
-                # button to switch between line and area charts
-                line_chart = line_chart_options[0].radio("Chart Options", ["Line Chart", "Area Chart"], index=0)
-                #area_chart = line_chart_options[1].radio("", ['Area Chart'])
-                               
-                # if we select line chart
-                if line_chart== "Line Chart":
-                    try:
-                        # if no data is showing, 
-                        if not Data_to_show_line:
-                            st.error("Please select at least one Data Point.")
-                        else:                           
-                            Line_Chart(Dataframe_to_display_line_chart, Data_to_show_line) 
-                            
-                    except urllib.error.URLError as e:
-                        st.error(
-                            """
-                            **This demo requires internet access.**
-
-                            Connection error: %s
-                        """
-                            % e.reason
-                        )
+                line_chart_options = st.beta_columns(3)
                 
-                elif line_chart == "Area Chart":
-                    try:
-                        # if no data is showing, 
-                        if not Data_to_show_line:
-                            st.error("Please select at least one Data Point.")
-
-                        else:                           
-                            Line_Area_chart(Dataframe_to_display_line_chart, Data_to_show_line) 
-                            
-                    except urllib.error.URLError as e:
-                        st.error(
-                            """
-                            **This demo requires internet access.**
-
-                            Connection error: %s
-                        """
-                            % e.reason
+                # Choose to show one data point per time or multiple at once to compare
+                type_of_chart_to_view = line_chart_options[2].selectbox("Chart Type", options=['Compare Variables', 'Single Variable View'])
+                
+                if type_of_chart_to_view is not 'Single Variable View':
                     
-                        )
+                
+                    # Create a multiselect to choose the columns based on the filtered data
+                    Data_to_show_line = st.multiselect("Choose Data to Display", options=data_col, key='linechart')
+                    Dataframe_to_display_line_chart = Trans_data[Data_to_show_line] # dataframe to select from
+                    # button to switch between line and area charts
+                    line_chart = line_chart_options[0].radio("Chart Options", ["Line Chart", "Area Chart"], index=0)
+                    #area_chart = line_chart_options[1].radio("", ['Area Chart'])
+
+                    # if we select line chart
+                    if line_chart== "Line Chart":
+                        try:
+                            # if no data is showing, 
+                            if not Data_to_show_line:
+                                st.error("Please select at least one Data Point.")
+                            else:                           
+                                Line_Chart(Dataframe_to_display_line_chart, Data_to_show_line) 
+
+                        except urllib.error.URLError as e:
+                            st.error(
+                                """
+                                **This demo requires internet access.**
+
+                                Connection error: %s
+                            """
+                                % e.reason
+                            )
+
+                    elif line_chart == "Area Chart":
+                        try:
+                            # if no data is showing, 
+                            if not Data_to_show_line:
+                                st.error("Please select at least one Data Point.")
+
+                            else:                           
+                                Line_Area_chart(Dataframe_to_display_line_chart, Data_to_show_line) 
+
+                        except urllib.error.URLError as e:
+                            st.error(
+                                """
+                                **This demo requires internet access.**
+
+                                Connection error: %s
+                            """
+                                % e.reason
+
+                            )
+                else: 
+                    Data_to_show_line = st.selectbox("Choose Data to Display", options=data_col, key='linechart')
+                    
+                    Dataframe_to_display_line_chart = Trans_data[Data_to_show_line] # dataframe to select from
+                    # button to switch between line and area charts
+                    line_chart = line_chart_options[0].radio("Chart Options", ["Line Chart", "Area Chart"], index=0)
+                    #area_chart = line_chart_options[1].radio("", ['Area Chart'])
+
+                    # if we select line chart
+                    if line_chart== "Line Chart":
+                        try:
+                            # if no data is showing, 
+                            if not Data_to_show_line:
+                                st.error("Please select at least one Data Point.")
+                            else:                           
+                                Line_Chart_single_view(Dataframe_to_display_line_chart, Data_to_show_line) 
+
+                        except urllib.error.URLError as e:
+                            st.error(
+                                """
+                                **This demo requires internet access.**
+
+                                Connection error: %s
+                            """
+                                % e.reason
+                            )
+
+                    elif line_chart == "Area Chart":
+                        try:
+                            # if no data is showing, 
+                            if not Data_to_show_line:
+                                st.error("Please select at least one Data Point.")
+
+                            else:                           
+                                Line_Area_chart_single_view(Dataframe_to_display_line_chart, Data_to_show_line) 
+
+                        except urllib.error.URLError as e:
+                            st.error(
+                                """
+                                **This demo requires internet access.**
+
+                                Connection error: %s
+                            """
+                                % e.reason
+
+                            )
                     
 
         heatmap_timeseries = Visualisation_segment.checkbox("Heatmap") 
@@ -385,17 +583,19 @@ elif choice_1 == "Data and Analysis":
             st.subheader("Timeseries Heatmap")
 
             Show_heatmap_times = st.beta_expander("Show Chart")
-            with Show_heatmap_times:           
+            with Show_heatmap_times:  
             
                 # Data to select
                 data_to_analyse = st.selectbox("Choose data", options=data_col)
                 # Dataframe to choose data from
-                Heatmap_dataframe_timeseries = Trans_data2[data_to_analyse]
+                Heatmap_dataframe_timeseries = Trans_data[data_to_analyse]
                 
                 # new label for line chart options
                 Axis_data = st.beta_columns([3,3,3,3])   
                 
                 Data_to_select_indexed = Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries) 
+                
+                #st.write(Data_to_select_indexed.Date.dt.day)
                 
                 axis_data = Heatmap_timeseries_index(data_to_analyse, Heatmap_dataframe_timeseries)
                 
