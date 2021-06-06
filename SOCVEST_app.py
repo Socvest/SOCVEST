@@ -26,16 +26,7 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
-
-
-
-def get_session_id():
-    session_id = get_report_ctx().session_id
-    session_id = session_id.replace('-','_')
-    session_id = '_id_' + session_id
-    return session_id
-
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 # DATA MANIPULATION - UNIVERSAL
 def reshape_data(data: pd.DataFrame):
@@ -64,7 +55,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     #data = reshape_data(data)   
     
     # date column sorting out
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True) #.dt.date
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True).dt.date
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
