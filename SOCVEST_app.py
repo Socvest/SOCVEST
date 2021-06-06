@@ -44,7 +44,7 @@ def reshape_data(data: pd.DataFrame):
 @st.cache(persist=True, allow_output_mutation=True)
 # COVID_19 DATA
 def COVID_19_data():
-    data = pd.read_csv('Data/COVID-19/COVID data1.csv', infer_datetime_format = True, parse_dates=True)  
+    data = pd.read_csv('Data/COVID-19/COVID data1.csv', infer_datetime_format = True) #, parse_dates=True)  
     return data
 
 #@st.cache(persist=True)
@@ -55,7 +55,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     #data = reshape_data(data)   
     
     # date column sorting out
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True).dt.date
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True) #.dt.date
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
