@@ -96,7 +96,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # data 2
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data2=data.pivot(index=['Date'], columns='Data', values='Values').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    Trans_data2=data.pivot(index='Date', columns='Data', values='Values').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
     return data_col, Trans_data, data_type, Trans_data2
 
