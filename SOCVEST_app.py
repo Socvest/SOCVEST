@@ -71,6 +71,17 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # Data type     
     data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
     Data_type_choice = Data_filtering[0].selectbox("Data Type", options = data_type)
+    # Choose regional option
+    if Category_choice == 'Mobility':
+        regional_data = data['Regional Data'].loc[data['Category']== Category_choice].unique()
+        Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
+        
+        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique()
+    else:
+        # Prepare the dataframe that will be used for other types of analysis
+        # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()        
+            
     # Prepare the dataframe that will be used for other types of analysis
     # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
     data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
