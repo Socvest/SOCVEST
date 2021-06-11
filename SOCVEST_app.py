@@ -71,20 +71,9 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # Data type     
     data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
     Data_type_choice = Data_filtering[0].selectbox("Data Type", options = data_type)
-    # Choose regional option
-    if Category_choice == 'Mobility':
-        regional_data = data['Regional Data'].loc[data['Category']== Category_choice].unique()
-        Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
-        
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique()
-    else:
-        # Prepare the dataframe that will be used for other types of analysis
-        # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()        
-            
     # Prepare the dataframe that will be used for other types of analysis
     # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-    #data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+    data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
     
             
    
@@ -96,7 +85,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     # data 2
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data2=data.pivot(index='Date', columns='Data', values='Values').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
+    Trans_data2=data.pivot(index=['Date'], columns='Data', values='Values').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
     return data_col, Trans_data, data_type, Trans_data2
 
