@@ -88,8 +88,21 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     series = data.Series.loc[data['Category']==Category_choice].unique()
     Series_choice = Data_filtering[2].radio('Sequential Data type', series)
 
+     # Category Choices
+    if Category_choice == 'Spending':
+        
+        data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
+        
+        # Data type     
+        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+        
+        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+        
+        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
+
     # Category Choices
-    if Category_choice == 'Transport':
+    elif Category_choice == 'Transport':
         
         data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
         
@@ -742,62 +755,74 @@ elif choice_1 == "Data and Analysis":
                 
                 Scatter_graph_data = scaled_dataframe[data_col]
                 
-                axes_placeholder = st.empty()
-                scatter_choices_placeholder = st.empty()
-                chart_placeholder = st.empty()
+                type_chart = st.radio("Type of chart", options= ['Advanced Chart', 'Simple Chart'], index=1)
                 
-               
-                chart_options = st.beta_columns(3)
-                axes_options = st.beta_columns(2)
+                if type_chart == 'Simple Chart':
+                    
+                    axes_options = st.beta_columns(2)
+                    chart_d = st.beta_columns(1)
+                    
+                    # select x axis
+                    select_box_X = axes_options[0].selectbox('Select x-axis', data_col)
+                    #select y-axis
+                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col) 
+                    
+                    test = px.scatter(Scatter_graph_data, x=select_box_X, y=select_box_Y, height=650, width=900)
+                    st.plotly_chart(test, use_container_width=True)
+                    
+                else:
+                    
+                    
+                    chart_options = st.beta_columns(3)
+                    axes_options = st.beta_columns(2)
+                    chart_d = st.beta_columns(1)
 
-                # Options for default chart
-                scatter_choices = st.beta_columns(3)
 
-                # User_choices_placeholder = st.empty()
+                    # Create an empty space to replace contents into
+                    #select x-axis
+                    select_box_X = axes_options[0].selectbox('Select x-axis', data_col, key=1)
+                    #select y-axis
+                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key=2) 
 
-                #select x-axis
-                select_box_X = axes_options[0].selectbox('Select x-axis', data_col, key=1)
-                #select y-axis
-                select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key=2) 
-                # Control dimensions of chart
-                color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
-                color = chart_options[0].selectbox('Choose chart color', options=color, key=1)
-                # Edge colors
-                edge_col = ['navy','red', 'blue']
-                edge_col_opt = chart_options[1].selectbox('Choose edge plots colour', options=edge_col)
-                # Height
-                height = scatter_choices[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=11.5, key=1)
-                # Ratio
-                #ratio_chart = scatter_choices[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7, key=2)
-                # Space
-                space = scatter_choices[1].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key=3)
-                # Show cuts/shapes of plots
-                alpha = scatter_choices[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
-                # Default settings
-                #default_options = scatter_choices[4].button('Default', key=1)
-                
-                bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
-                # graph background colour
-                Background_colr = chart_options[2].selectbox('Choose Background Colour', options=bkc)
-                
-                
-                #ticks for margin plots
-                #margin_grid = scatter_choices[4].radio('Show grid for edge plots', ['True', 'False'])
-                
-                sns.set_style(Background_colr)
-                
-                chart = sns.jointplot(x=select_box_X, 
-                                          y=select_box_Y, 
-                                          data = Scatter_graph_data,
-                                          alpha=alpha,
-                                          height=height,  
-                                          space=space, 
-                                          xlim=(-0.01,1.01), 
-                                          ylim=(-0.01,1.01),
-                                          color=color,
-                                          marginal_kws={'color':edge_col_opt}) #, color=color) # hue=select_box_hue, s=select_box_size,  marginal_ticks=True)
+                    # Control dimensions of chart
+                    color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
+                    color = chart_options[0].selectbox('Choose chart color', options=color, key=1)
+                    # Edge colors
+                    edge_col = ['navy','red', 'blue']
+                    edge_col_opt = chart_options[1].selectbox('Choose edge plots colour', options=edge_col)
+                    # Height
+                    height = chart_options[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=11.5, key=1)
+                    # Ratio
+                    #ratio_chart = chart_options[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7, key=2)
+                    # Space
+                    space = chart_options[1].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key=3)
+                    
+                    bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
+                     # graph background colour
+                    Background_colr = chart_options[2].selectbox('Choose Background Colour', options=bkc)
+                    # Show cuts/shapes of plots
+                    alpha = chart_options[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
+                    # Default settings
+                    #default_options = chart_options[3].button('Default', key=1)
 
-                st.pyplot(chart, use_container_width=True)
+
+                    #ticks for margin plots
+                    #margin_grid = chart_options[2].radio('Show grid for edge plots', ['True', 'False'])
+
+                    sns.set_style(Background_colr)
+
+                    chart = sns.jointplot(x=select_box_X, 
+                                             y=select_box_Y, 
+                                              data = Scatter_graph_data,
+                                              alpha=alpha,
+                                              height=height,  
+                                              space=space, 
+                                              xlim=(-0.01,1.01), 
+                                              ylim=(-0.01,1.01),
+                                              color=color,
+                                              marginal_kws={'color':edge_col_opt}) #, color=color) # hue=select_box_hue, s=select_box_size,  marginal_ticks=True)
+
+                    st.pyplot(chart, use_container_width=True)
                 
                 Advanced_plots = st.beta_columns([4,4,3,3,5])
 
