@@ -121,7 +121,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data = data[['Country', 'Category', 'Series', 'Data Type', 'Regional Data', 'Data', 'Values']]
         
         # Data type     
-        data_type = data['Data Type'].loc[data['Series']==(Series_choice)].unique()
+        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
         Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
         
         #data = data.set_index('Date')
