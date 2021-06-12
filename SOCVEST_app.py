@@ -854,19 +854,7 @@ elif choice_1 == "Data and Analysis":
                     ax.set_xlim(0)
                     st.pyplot()
                         
-        Google_analytics_js = """
-                <!-- Global site tag (gtag.js) - Google Analytics -->
-                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T4YZ9GBXN"></script>
-                    <script>
-                      window.dataLayer = window.dataLayer || [];
-                      function gtag(){dataLayer.push(arguments);}
-                      gtag('js', new Date());
-
-                      gtag('config', 'G-0T4YZ9GBXN');
-                    </script>
-                """
-    
-        components.html(Google_analytics_js)        
+      
  
                 
             
@@ -893,6 +881,21 @@ elif choice_1 == "Data and Analysis":
         title = Data_choices = 'Financial Markets'
         st.subheader(title)
         st.markdown("## Coming soon...")
+
+
+Google_analytics_js = """
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T4YZ9GBXN"></script>
+                    <script>
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-0T4YZ9GBXN');
+                    </script>
+                """
+    
+components.html(Google_analytics_js)   
        
         
     
