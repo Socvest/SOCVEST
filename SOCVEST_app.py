@@ -398,8 +398,7 @@ choice_1 = st.sidebar.selectbox("Menu", pages)
 
 if choice_1 =="About us":
    
-    components.html(analytics_js, width=200, height=200)          
-            
+    components.html(analytics_js, width=200, height=200) 
             
     title1,title2,title3 = st.beta_columns(3)
     title2.title("SOCVEST")
@@ -883,26 +882,19 @@ elif choice_1 == "Data and Analysis":
                 
             
     if Data_choices == 'Economy':
-        
         components.html(analytics_js, width=200, height=200)  
             
         title = Data_choices = 'Economy'
         st.subheader(title)
         st.markdown("## Coming soon...")
 
-
-
-                
-    
     if Data_choices == 'Geopolitics':
         components.html(analytics_js, width=200, height=200)                
         
         title = Data_choices = 'Geopolitics'
         st.subheader(title)
         st.markdown("## Coming soon...")
-    
- 
-    
+
     if Data_choices == 'Country':
         components.html(analytics_js, width=200, height=200)
         title = Data_choices = 'Country'
@@ -917,18 +909,3 @@ elif choice_1 == "Data and Analysis":
         st.subheader(title)
         st.markdown("## Coming soon...")
 
-
-
-       
-        
-    
-        
-        
-    
-    
-                
-                
-                    
-                        
-            
-    
