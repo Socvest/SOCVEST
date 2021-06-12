@@ -854,7 +854,26 @@ elif choice_1 == "Data and Analysis":
                     ax.set_xlim(0)
                     st.pyplot()
                         
-      
+    
+    analytics_js = """
+                <!-- Default Statcounter code for SOCVEST
+                        https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
+                        <script type="text/javascript">
+                        var sc_project=12548058; 
+                        var sc_invisible=1; 
+                        var sc_security="baba5af9"; 
+                        </script>
+                        <script type="text/javascript"
+                        src="https://www.statcounter.com/counter/counter.js" async></script>
+                        <noscript><div class="statcounter"><a title="Web Analytics"
+                        href="https://statcounter.com/" target="_blank"><img class="statcounter"
+                        src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
+                        Analytics"></a></div></noscript>
+                        <!-- End of Statcounter Code -->
+                """
+
+    components.html(analytics_js, width=200, height=200)   
+
  
                 
             
@@ -883,24 +902,7 @@ elif choice_1 == "Data and Analysis":
         st.markdown("## Coming soon...")
 
 
-analytics_js = """
-                <!-- Default Statcounter code for SOCVEST
-                        https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
-                        <script type="text/javascript">
-                        var sc_project=12548058; 
-                        var sc_invisible=1; 
-                        var sc_security="baba5af9"; 
-                        </script>
-                        <script type="text/javascript"
-                        src="https://www.statcounter.com/counter/counter.js" async></script>
-                        <noscript><div class="statcounter"><a title="Web Analytics"
-                        href="https://statcounter.com/" target="_blank"><img class="statcounter"
-                        src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
-                        Analytics"></a></div></noscript>
-                        <!-- End of Statcounter Code -->
-                """
-    
-components.html(analytics_js)   
+
        
         
     
