@@ -29,19 +29,7 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
-Google_analytics_js = """
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T4YZ9GBXN"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
 
-          gtag('config', 'G-0T4YZ9GBXN');
-        </script>
-    """
-    
-components.html(Google_analytics_js)
 
 # DATA MANIPULATION - UNIVERSAL
 def reshape_data(data: pd.DataFrame):
@@ -865,6 +853,20 @@ elif choice_1 == "Data and Analysis":
                     sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     ax.set_xlim(0)
                     st.pyplot()
+                        
+        Google_analytics_js = """
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T4YZ9GBXN"></script>
+                    <script>
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-0T4YZ9GBXN');
+                    </script>
+                """
+    
+        components.html(Google_analytics_js)        
  
                 
             
