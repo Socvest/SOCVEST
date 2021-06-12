@@ -63,7 +63,7 @@ def reshape_data(data: pd.DataFrame):
 @st.cache(persist=True, allow_output_mutation=True)
 # COVID_19 DATA
 def COVID_19_data():
-    data = pd.read_csv('Data/COVID-19/COVID data1.csv', infer_datetime_format = True, parse_dates=True)  
+    data = pd.read_csv('Data/COVID-19/COVID data1.csv', index_col='Date',  parse_dates=True,infer_datetime_format=True) 
     return data
 
 #@st.cache(persist=True)
