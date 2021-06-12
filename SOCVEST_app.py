@@ -1007,6 +1007,7 @@ elif choice_1 == "Data and Analysis":
         st.markdown("## Coming soon...")
 
 elif choice_1 =="Feedback":
+    components.html(analytics_js, width=200, height=200) 
     
     st.subheader("Feedback")
     
