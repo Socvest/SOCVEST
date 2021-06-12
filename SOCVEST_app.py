@@ -4,6 +4,7 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
+import streamlit.components.v1 as components
 import seaborn as sns
 import plotly.express as px
 # Prevent error showing up
@@ -27,6 +28,20 @@ hide_streamlit_style = """
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
+Google_analytics_js = """
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T4YZ9GBXN"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0T4YZ9GBXN');
+        </script>
+    """
+    
+components.html(Google_analytics_js)
 
 # DATA MANIPULATION - UNIVERSAL
 def reshape_data(data: pd.DataFrame):
