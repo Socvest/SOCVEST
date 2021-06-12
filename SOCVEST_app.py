@@ -474,7 +474,7 @@ def Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colou
 #pages available
 st.sidebar.title("SOCVEST")
 
-pages = ["About us", "Data and Analysis"] #, "Feedback"]
+pages = ["About us", "Data and Analysis", "Feedback"]
 
 # About us page
 choice_1 = st.sidebar.selectbox("Menu", pages)
@@ -1005,4 +1005,15 @@ elif choice_1 == "Data and Analysis":
         title = Data_choices = 'Financial Markets'
         st.subheader(title)
         st.markdown("## Coming soon...")
+
+elif choice_1 =="Feedback":
+    
+    st.subheader("Feedback")
+    
+    st.write("We value your input and are always striving to improve the app to tailor to your needs. Help us help you!")
+    
+    with st.form(key='feedback form 1'):
+        first_name = st.text_input("First name")
+        issue = st.text_area("Your Feedback")
+        submit_button = st.form_submit_button("Submit")
 
