@@ -151,16 +151,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
-        
-        
-        
-    #elif Category_choice == 'Job Search Adverts':
-        
-        
-   # elif Category_choice == 'Social':
-        
-    #    data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values', 'Date']]
-    
+            
     else:
         
         # Data type     
@@ -178,19 +169,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
         # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
         Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
-    # Data type     
-    data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
-    Data_type_choice = Data_filtering[0].selectbox("Data Type", options = data_type)
-    # Prepare the dataframe that will be used for other types of analysis
-    # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-    data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
     
-            
-   
-    #data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True).dt.date 
-    # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
-    # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-    Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
     
     # data 2
     #data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
@@ -557,6 +536,8 @@ elif choice_1 == "Data and Analysis":
                 
                 Data_to_select= Trans_data[Select_cols_dataframe].fillna("") # dataframe to select from
                 #write_state_df(Data_to_select,engine,session_id + '_df')
+                        
+                Data_to_select.index = Data_to_select.index.date
                 
                 if not Select_cols_dataframe:
                     st.error("Please select at least one column.")
