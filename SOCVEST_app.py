@@ -29,6 +29,22 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
+analytics_js = """
+    <!-- Default Statcounter code for SOCVEST
+            https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
+            <script type="text/javascript">
+            var sc_project=12548058; 
+            var sc_invisible=1; 
+            var sc_security="baba5af9"; 
+            </script>
+            <script type="text/javascript"
+            src="https://www.statcounter.com/counter/counter.js" async></script>
+            <noscript><div class="statcounter"><a title="Web Analytics"
+            href="https://statcounter.com/" target="_blank"><img class="statcounter"
+            src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
+            Analytics"></a></div></noscript>
+            <!-- End of Statcounter Code -->
+    """
 
 
 # DATA MANIPULATION - UNIVERSAL
@@ -381,23 +397,7 @@ pages = ["About us", "Data and Analysis"] #, "Feedback"]
 choice_1 = st.sidebar.selectbox("Menu", pages)
 
 if choice_1 =="About us":
-    analytics_js = """
-    <!-- Default Statcounter code for SOCVEST
-            https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
-            <script type="text/javascript">
-            var sc_project=12548058; 
-            var sc_invisible=1; 
-            var sc_security="baba5af9"; 
-            </script>
-            <script type="text/javascript"
-            src="https://www.statcounter.com/counter/counter.js" async></script>
-            <noscript><div class="statcounter"><a title="Web Analytics"
-            href="https://statcounter.com/" target="_blank"><img class="statcounter"
-            src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
-            Analytics"></a></div></noscript>
-            <!-- End of Statcounter Code -->
-    """
-
+   
     components.html(analytics_js, width=200, height=200)          
             
             
@@ -434,24 +434,7 @@ elif choice_1 == "Data and Analysis":
     Data_choices = st.sidebar.radio("Choose dataset", ['COVID-19', 'Economy', 'Geopolitics','Country','Financial Markets'])
 
     if Data_choices == 'COVID-19':
-            
-        analytics_js = """
-                <!-- Default Statcounter code for SOCVEST
-                        https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
-                        <script type="text/javascript">
-                        var sc_project=12548058; 
-                        var sc_invisible=1; 
-                        var sc_security="baba5af9"; 
-                        </script>
-                        <script type="text/javascript"
-                        src="https://www.statcounter.com/counter/counter.js" async></script>
-                        <noscript><div class="statcounter"><a title="Web Analytics"
-                        href="https://statcounter.com/" target="_blank"><img class="statcounter"
-                        src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
-                        Analytics"></a></div></noscript>
-                        <!-- End of Statcounter Code -->
-                """
-
+           
         components.html(analytics_js, width=200, height=200) 
         # create title based on choice            
         title = Data_choices = 'COVID-19'
@@ -892,24 +875,7 @@ elif choice_1 == "Data and Analysis":
                     sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     ax.set_xlim(0)
                     st.pyplot()
-                        
-    
-    analytics_js = """
-                <!-- Default Statcounter code for SOCVEST
-                        https://share.streamlit.io/socvest/socvest/main/SOCVEST_app.py -->
-                        <script type="text/javascript">
-                        var sc_project=12548058; 
-                        var sc_invisible=1; 
-                        var sc_security="baba5af9"; 
-                        </script>
-                        <script type="text/javascript"
-                        src="https://www.statcounter.com/counter/counter.js" async></script>
-                        <noscript><div class="statcounter"><a title="Web Analytics"
-                        href="https://statcounter.com/" target="_blank"><img class="statcounter"
-                        src="https://c.statcounter.com/12548058/0/baba5af9/1/" alt="Web
-                        Analytics"></a></div></noscript>
-                        <!-- End of Statcounter Code -->
-                """
+                       
 
     components.html(analytics_js, width=200, height=200)   
 
@@ -917,12 +883,20 @@ elif choice_1 == "Data and Analysis":
                 
             
     if Data_choices == 'Economy':
+        
+        components.html(analytics_js, width=200, height=200)  
+            
         title = Data_choices = 'Economy'
         st.subheader(title)
         st.markdown("## Coming soon...")
+
+
+
                 
     
     if Data_choices == 'Geopolitics':
+        components.html(analytics_js, width=200, height=200)                
+        
         title = Data_choices = 'Geopolitics'
         st.subheader(title)
         st.markdown("## Coming soon...")
@@ -930,12 +904,15 @@ elif choice_1 == "Data and Analysis":
  
     
     if Data_choices == 'Country':
+        components.html(analytics_js, width=200, height=200)
         title = Data_choices = 'Country'
         st.subheader(title)
         st.markdown("## Coming soon...")
         
         
     if Data_choices == 'Financial Markets':
+        components.html(analytics_js, width=200, height=200)
+            
         title = Data_choices = 'Financial Markets'
         st.subheader(title)
         st.markdown("## Coming soon...")
