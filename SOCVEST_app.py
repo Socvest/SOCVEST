@@ -96,13 +96,13 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     
             
    
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True).dt.date 
+    #data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True).dt.date 
     # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
     Trans_data=data.pivot(index='Date', columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
     
     # data 2
-    data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
+    #data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
     # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
     Trans_data2=data.pivot(index=['Date'], columns='Data', values='Values').rename_axis(None, axis=1) #.reindex(data['Date'].unique(), axis=0) 
     # return the whole function
