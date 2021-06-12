@@ -1013,8 +1013,10 @@ elif choice_1 =="Feedback":
     
     st.write("We value your input and are always striving to improve the app to tailor to your needs. Help us help you!")
     
-    with st.form(key='feedback form 1'):
-        first_name = st.text_input("First name")
-        issue = st.text_area("Your Feedback")
-        submit_button = st.form_submit_button("Submit")
+    survey = """
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex4XONiQinqRHPlt1Ak01--8BCAgVVTxfoUQw1tTvyJZ49SA/viewform?embedded=true" width="640" height="536" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    
+    """
+    
+    components.html(survey, width=1200, height=1200)
 
