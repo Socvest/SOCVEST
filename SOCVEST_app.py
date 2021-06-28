@@ -164,6 +164,36 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+
+    elif Category_choice == 'Economy':
+        
+        data = data[['Country', 'Category', 'Series', 'Economic segment', 'Inflation Type', 'Inflation sub segment', 'Data Type', 'Data', 'Values']] 
+        
+        # type of economic data
+        economic_segment = data['Economic segment'].loc[data['Category']==Category_choice].unique()
+        economic_segment_choice = Data_filtering[0].selectbox("Economic Segment", economic_segment)
+        
+        # If inflation is selected
+        if economic_segment_choice == 'Inflation':
+         
+            # inflation type
+            inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
+            inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
+            
+            # data type
+            data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
+            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)           
+            
+            if inflation_type_choice == 'CPIH segments':
+                
+                inflation_sub_segment = data['Inflation sub segment'].loc[data['Inflation Type']==inflation_type_choice].unique()
+                inflation_sub_segment_choice = Data_filtering[1].selectbox("Inflation Sub-Segment", inflation_sub_segment)
+                        
+            
+        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique()
+            
+        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
+            
             
     else:
         
