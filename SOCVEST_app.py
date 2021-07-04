@@ -197,7 +197,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         
         elif economic_segment_choice == 'Online weekly price changes for food & drink items':
                 
-                 # inflation type                
+            # inflation type                
             inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
             inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
 
@@ -975,7 +975,7 @@ elif choice_1 == "Data and Analysis":
                 
                 bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
                 # graph background colour
-                Background_col = Hist_options[1].selectbox('Choose Background Colour', options=bkc, key=1)
+                Background_col = Hist_options[1].selectbox('Choose Background Colour', options=bkc, key="hist")
                 sns.set_style(Background_col)
                 
                 # KDE argument
