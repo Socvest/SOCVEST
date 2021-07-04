@@ -191,9 +191,9 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
                        
                         
             
-                data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique()
+            data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique()
             
-                Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
         
         elif economic_segment_choice == 'Online weekly price changes for food & drink items':
                 
