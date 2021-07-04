@@ -21,13 +21,13 @@ st.set_page_config(page_title='SOCVEST') #,layout="wide")
 import datetime
 import calendar
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+#hide_streamlit_style = """
+#            <style>
+  #          #MainMenu {visibility: hidden;}
+ #           footer {visibility: hidden;}
+   #         </style>
+    #        """
+#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 analytics_js = """
     <!-- Default Statcounter code for SOCVEST
