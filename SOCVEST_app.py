@@ -594,7 +594,7 @@ elif choice_1 == "Data and Analysis":
                 #write_state('Select_cols_dataframe',Select_cols_dataframe, engine, session_id)
                 #Select_cols_dataframe = read_state('Select_cols_dataframe',engine,session_id)
                 
-                Data_to_select= Trans_data[Select_cols_dataframe].fillna("")) # dataframe to select from
+                Data_to_select= Trans_data[Select_cols_dataframe].fillna("") # dataframe to select from
                 #write_state_df(Data_to_select,engine,session_id + '_df')
                         
                 Data_to_select.index = Data_to_select.index.date
