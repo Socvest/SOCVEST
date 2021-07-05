@@ -577,6 +577,8 @@ elif choice_1 == "Data and Analysis":
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
             data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
             
+            data_col
+            
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
             # We use this to hide or show the data
@@ -592,7 +594,7 @@ elif choice_1 == "Data and Analysis":
                 #write_state('Select_cols_dataframe',Select_cols_dataframe, engine, session_id)
                 #Select_cols_dataframe = read_state('Select_cols_dataframe',engine,session_id)
                 
-                Data_to_select= Trans_data[Select_cols_dataframe].fillna("") # dataframe to select from
+                Data_to_select= list(Trans_data[Select_cols_dataframe]) #.fillna("")) # dataframe to select from
                 #write_state_df(Data_to_select,engine,session_id + '_df')
                         
                 Data_to_select.index = Data_to_select.index.date
