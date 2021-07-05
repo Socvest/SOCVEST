@@ -602,7 +602,7 @@ elif choice_1 == "Data and Analysis":
                 if not Select_cols_dataframe:
                     st.error("Please select at least one column.")
                 else:
-                    st.write(list(Data_to_select)) #.style.set_precision(2))                    
+                    st.write(Data_to_select) #.style.set_precision(2))                    
         # CHARTS
         st.sidebar.title("Visualisation")
         # Show charts for selected data
