@@ -21,13 +21,13 @@ st.set_page_config(page_title='SOCVEST') #,layout="wide")
 import datetime
 import calendar
 
-#hide_streamlit_style = """
-#            <style>
-  #          #MainMenu {visibility: hidden;}
- #           footer {visibility: hidden;}
-   #         </style>
-    #        """
-#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 analytics_js = """
     <!-- Default Statcounter code for SOCVEST
@@ -600,7 +600,7 @@ elif choice_1 == "Data and Analysis":
                 if not Select_cols_dataframe:
                     st.error("Please select at least one column.")
                 else:
-                    st.write(Data_to_select.style.set_precision(2))                    
+                    st.write(Data_to_select) #.style.set_precision(2))                    
         # CHARTS
         st.sidebar.title("Visualisation")
         # Show charts for selected data
