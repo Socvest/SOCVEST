@@ -97,7 +97,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
         Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
         
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
 
