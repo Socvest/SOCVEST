@@ -589,7 +589,7 @@ elif choice_1 == "Data and Analysis":
                 # title to show they can select data
                 DF_Display = st.subheader("View Data Table")
                 # Create a multiselect to choose the columns based on the filtered data
-                Select_cols_dataframe = st.multiselect("Choose columns to Display", options=data_col, key="dataframe choice")# distinct selectbox
+                Select_cols_dataframe = st.multiselect("Choose data to Display", options=data_col)# distinct selectbox
                 #read_state('Column selection', engine, session_id)
                 #write_state('Select_cols_dataframe',Select_cols_dataframe, engine, session_id)
                 #Select_cols_dataframe = read_state('Select_cols_dataframe',engine,session_id)
