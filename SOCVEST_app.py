@@ -577,7 +577,7 @@ elif choice_1 == "Data and Analysis":
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
             data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
             
-            data_col
+            
             
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
