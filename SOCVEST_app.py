@@ -630,7 +630,7 @@ elif choice_1 == "Data and Analysis":
                     
                 
                     # Create a multiselect to choose the columns based on the filtered data
-                    Data_to_show_line = st.multiselect("Choose Data to Display", options=data_col, key='linechart')
+                    Data_to_show_line = st.multiselect("Choose Data to Display", options=data_col) #, key='linechart')
                     Dataframe_to_display_line_chart = Trans_data[Data_to_show_line] # dataframe to select from
                     # button to switch between line and area charts
                     line_chart = line_chart_options[0].radio("Chart Options", ["Line Chart", "Area Chart"], index=0)
