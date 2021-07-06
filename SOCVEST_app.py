@@ -110,7 +110,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
         Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
         
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)      
         
@@ -129,7 +129,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
         Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
         
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique())
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
         
@@ -146,7 +146,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         data_type = data['Data Type'].loc[data['Survey Topic']==(Survey_choice)].unique()
         Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
         
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Survey Topic']==Survey_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Survey Topic']==Survey_choice)].unique())
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
         
@@ -161,7 +161,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
         
         
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
         
         Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
 
@@ -191,7 +191,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
                        
                         
             
-            data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique()
+            data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
             
             Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
         
@@ -205,7 +205,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
             data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
             Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)      
                 
-            data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique()
+            data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
             
             Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)    
             
@@ -218,7 +218,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     
         # Prepare the dataframe that will be used for other types of analysis
         # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-        data_col = data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique()
+        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
     
     
             
