@@ -99,7 +99,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
         
         data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
         
-        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
+        Trans_data= list(data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1))#.reindex(data['Date'].unique(), axis=0)  
 
     # Category Choices
     elif Category_choice == 'Transport':
