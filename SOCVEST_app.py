@@ -213,7 +213,7 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
     else:
         
         # Data type     
-        data_type = data['Data Type'].loc[data['Series']==(Series_choice)].unique()
+        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
         Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
     
         # Prepare the dataframe that will be used for other types of analysis
