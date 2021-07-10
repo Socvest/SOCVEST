@@ -561,15 +561,13 @@ elif choice_1 == "Data and Analysis":
     if Data_choices == 'COVID-19':
         components.html(analytics_js, width=200, height=200) 
         # create title based on choice            
-        title = Data_choices = 'COVID-19'
+        title = 'COVID-19'
         st.subheader(title)
         # Create expander to view/choose data
         with st.beta_expander("Choose Data"):
             st.write("Choose data unique to a country for this theme.")
-            
             # Create labels to slot filtering sections
             Data_filtering = st.beta_columns(3)
-
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
             data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
