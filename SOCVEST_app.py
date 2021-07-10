@@ -554,14 +554,11 @@ if choice_1 =="About us":
     # labels to indicate we do not provide investment adviceh
     st.success("We do not provide investment and financial advice. Data and capabilities provided on this platform is not financial advice")    
     
-elif choice_1 == "Data and Analysis":  
+elif choice_1 == "Data and Analysis":   
+    Data_choices = st.sidebar.radio("Choose dataset", ['COVID-19', 'Economy', 'Geopolitics','Country','Financial Markets'])
     st.title("Data Exploration")
     st.write("Select a dataset and the range of data visualisation tools available to build your analysis. Once done, uncheck the 'Hide Data' below to view the data.")
- 
-    Data_choices = st.sidebar.radio("Choose dataset", ['COVID-19', 'Economy', 'Geopolitics','Country','Financial Markets'])
-
     if Data_choices == 'COVID-19':
-           
         components.html(analytics_js, width=200, height=200) 
         # create title based on choice            
         title = Data_choices = 'COVID-19'
@@ -576,8 +573,6 @@ elif choice_1 == "Data and Analysis":
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
             data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
-            
-            
             
             # create new labels for hide data
             data_mix_buttons = st.beta_columns([3,1,1])
