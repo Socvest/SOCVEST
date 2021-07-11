@@ -946,9 +946,9 @@ elif choice_1 == "Data and Analysis":
 
                     # Create an empty space to replace contents into
                     #select x-axis
-                    select_box_X = axes_options[0].selectbox('Select x-axis', data_col, key=1)
+                    select_box_X = axes_options[0].selectbox('Select x-axis', data_col, key="x-axis")
                     #select y-axis
-                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key=2) 
+                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col, key="y-axis") 
 
                     # Control dimensions of chart
                     color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
