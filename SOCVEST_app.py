@@ -78,155 +78,261 @@ def Filter_COVID_Timeseries_Data(Data_filtering):
 
     # GET COUNTRY DATA FOR THE COVID-19 THEME DATABASE
     # COUNTRY - get all values from the countries column
-    countries = data.Country.unique()
+    countries = data.Geography.unique()
+    #countries = countries.unique() #drop_duplicates(False)
     # first data filtering choice by country
-    Country_choice = Data_filtering[0].selectbox("Country", countries)
+    Country_choice = Data_filtering[0].selectbox("Geography", countries)
     # CATEGORY - get all row values in the category column that are in the country column
-    category = data['Category'].loc[data['Country'] == Country_choice].unique() 
+    category = data['Category'].loc[data['Geography'] == Country_choice].unique()  
     Category_choice = Data_filtering[1].selectbox("Category", category)
     # SERIES - get all series row values that are in the category column
     series = data.Series.loc[data['Category']==Category_choice].unique()
     Series_choice = Data_filtering[2].radio('Sequential Data type', series)
-
-     # Category Choices
-    if Category_choice == 'Spending':
-        
-        data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
-        
-        # Data type     
-        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-        
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
-        
-        Trans_data= data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
-
-    # Category Choices
-    elif Category_choice == 'Transport':
-        
-        data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
-        
-        # Data type     
-        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-        
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
-        
-        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)      
-        
     
+    if Country_choice == 'United Kingdom':
     
-    elif Category_choice == 'Mobility':
-        
-        data = data[['Country', 'Category', 'Series', 'Data Type', 'Regional Data', 'Data', 'Values']]
-        
-        # Data type     
-        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-        
-        #data = data.set_index('Date')
-        
-        regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
-        Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
-        
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique())
-        
-        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
-        
-    elif Category_choice == 'Business impact and conditions survey':
-        
-        data = data[['Country', 'Category', 'Series', 'Data Type', 'Regional Data',  'Survey Topic', 'Data', 'Values']]
-        
-        #regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
-        #Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
-        
-        survey_type = data['Survey Topic'].loc[data['Category']==Category_choice].unique()
-        Survey_choice = Data_filtering[1].selectbox("Survey Topic Option", options=survey_type)
-        
-        data_type = data['Data Type'].loc[data['Survey Topic']==(Survey_choice)].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-        
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Survey Topic']==Survey_choice)].unique())
-        
-        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
-        
-    elif Category_choice == 'Job Search Adverts':
-        
-        data = data[['Country', 'Category', 'Series', 'Data Type', 'Regional Data',  'Survey Topic', 'Data', 'Values']]
-        
-        data_type = data['Data Type'].loc[data['Category']==Category_choice].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-        
-        regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
-        Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
-        
-        
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
-        
-        Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+        if Category_choice == 'Social':
 
-    elif Category_choice == 'Economy':
-        
-        data = data[['Country', 'Category', 'Series', 'Economic segment', 'Inflation Type', 'Inflation sub segment', 'Data Type', 'Data', 'Values']] 
-        
-        # type of economic data
-        economic_segment = data['Economic segment'].loc[data['Category']==Category_choice].unique()
-        economic_segment_choice = Data_filtering[0].selectbox("Economic Segment", economic_segment)
-        
-        # If inflation is selected
-        if economic_segment_choice == 'Inflation':
-         
-            # inflation type
-            inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
-            inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
-            
-            # data type
-            data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
-            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)           
-            
-            if inflation_type_choice == 'CPIH segments':
+            data = data[['Geography', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
+
+             # Data type     
+            data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
+
+        # Category Choices
+        if Category_choice == 'Spending':
+
+            data = data[['Geography', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
+
+            # Data type     
+            data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)  
+
+        # Category Choices
+        elif Category_choice == 'Transport':
+
+            data = data[['Geography', 'Category', 'Series', 'Data Type', 'Data', 'Values']]
+
+            # Data type     
+            data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)      
+
+        elif Category_choice == 'Mobility':
+
+            data = data[['Country', 'Category', 'Series', 'Data Type', 'Regional Data', 'Data', 'Values']]
+
+            # Data type     
+            data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
+            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+
+            #data = data.set_index('Date')
+
+            regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
+            Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Regional Data']==Regional_data_choice)].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+
+        elif Category_choice == 'Business impact and conditions survey':
+
+            data = data[['Geography', 'Category', 'Series', 'Data Type', 'Regional Data',  'Survey Topic', 'Data', 'Values']]
+
+            #regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique()
+            #Regional_data_choice = Data_filtering[1].selectbox("Regional Data Option", options=regional_data)
+
+            survey_type = data['Survey Topic'].loc[data['Category']==Category_choice].unique()
+            Survey_choice = Data_filtering[0].selectbox("Survey Topic Option", options=survey_type)
+
+            data_type = data['Data Type'].loc[data['Survey Topic']==(Survey_choice)].unique()
+            Data_type_choice = Data_filtering[1].selectbox("Data Type", data_type)
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice) & (data['Survey Topic']==Survey_choice)].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+
+        elif Category_choice == 'Job Search Adverts':
+
+            data = data[['Geography', 'Category', 'Series', 'Data Type', 'Regional Data', 'Data', 'Values']]
+
+            regional_data = data['Regional Data'].loc[data['Category']==Category_choice].unique() #loc[data['Data Type']==Data_type_choice].unique()
+            Regional_data_choice = Data_filtering[0].selectbox("Regional Data Option", options=regional_data)
+
+            data_type = data['Data Type'].loc[data['Category']==Category_choice].unique()
+            Data_type_choice = Data_filtering[1].selectbox("Data Type", data_type)
+
+
+            data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Regional Data']==Regional_data_choice) & (data['Data Type'].isin(data_type))].unique())
+
+            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+
+        elif Category_choice == 'Economy':
+
+            data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Inflation Type', 'Inflation sub segment', 'Data Type', 'Data', 'Values']] 
+
+            # type of economic data
+            economic_segment = data['Economic segment'].loc[data['Category']==Category_choice].unique()
+            economic_segment_choice = Data_filtering[0].selectbox("Economic Segment", economic_segment)
+
+            # If inflation is selected
+            if economic_segment_choice == 'Inflation':
+
+                # inflation type
+                inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
+                inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
+
+                # data type
+                data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
+                Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)           
+
+                if inflation_type_choice == 'CPIH segments':
+
+                    inflation_sub_segment = data['Inflation sub segment'].loc[data['Inflation Type']==inflation_type_choice].unique()
+                    inflation_sub_segment_choice = Data_filtering[1].selectbox("Inflation Sub-Segment", inflation_sub_segment)
+
+
+
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
+
+                Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
+
+            elif economic_segment_choice == 'Online weekly price changes for food & drink items':
+
+                     # inflation type                
+                inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
+                inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
+
+                # data type
+                data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
+                Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)      
+
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
+
+                Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)  
                 
-                inflation_sub_segment = data['Inflation sub segment'].loc[data['Inflation Type']==inflation_type_choice].unique()
-                inflation_sub_segment_choice = Data_filtering[1].selectbox("Inflation Sub-Segment", inflation_sub_segment)
-                       
+
+
+
+
+
+
+            #elif Category_choice == 'Job Search Adverts':
+
+
+           # elif Category_choice == 'Social':
+
+            #    data = data[['Country', 'Category', 'Series', 'Data Type', 'Data', 'Values', 'Date']]
+
+            else:
+
+
+                # Data type     
+                #data_type = data['Data Type'].loc[data['Series']==(Series_choice)].unique()
+                #Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
+
+                # Prepare the dataframe that will be used for other types of analysis
+                # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice)].unique()) # & (data['Data Type']==Data_type_choice)].unique()
+
+
+
+
+                # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
+                # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
+                Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
+    
+    
+    
+    elif Country_choice == 'European Union':
+        
+        data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Inflation Type', 'Inflation sub segment', 'Government finance segment','Household segment', 'European Union segment', 'Data Type', 'Data', 'Values']]
+            
+        if Category_choice == 'The Economy':
                         
+            # type of economic data
+            economic_segment = data['Economic segment'].loc[data['Category'] == Category_choice].unique()
+            economic_segment_choice = Data_filtering[0].selectbox("Economic Segment", economic_segment)
             
-            data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
-            
-            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)
-        
-        elif economic_segment_choice == 'Online weekly price changes for food & drink items':
+            if economic_segment_choice == 'Government Finance':
                 
-            # inflation type                
-            inflation_type = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
-            inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", inflation_type)   
+                data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Government finance segment', 'Data Type', 'Data', 'Values']]
+                
+                # display Government finance segment 
+                gov_finance_segment = data['Government finance segment'].loc[data['Economic segment'] == economic_segment_choice].unique()
+                Gov_fin_choice = Data_filtering[1].selectbox("Government finance Segment", options=gov_finance_segment)
+                
+                # data type
+                data_type = data['Data Type'].loc[data['Government finance segment']==Gov_fin_choice].unique()
+                Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)  
+                
+                
+                # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Government finance segment']==Gov_fin_choice) & (data['Data Type']==Data_type_choice)].unique())
+                
+                Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+                
+            if economic_segment_choice == 'Household accounts':
+                
+                data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Household segment', 'European Union segment', 'Data Type', 'Data', 'Values']]
+                
+                # display Housing segment 
+                Housing_segment = data['Household segment'].loc[data['Economic segment'] == economic_segment_choice].unique()
+                housing_choice = Data_filtering[0].selectbox("Housing Accounts Segment", options=Housing_segment)
+                
+                # data type
+                data_type = data['Data Type'].loc[data['Household segment']==housing_choice].unique()
+                Data_type_choice = Data_filtering[1].selectbox("Data Type", data_type)  
+                
+                
+                # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Household segment']==housing_choice) & (data['Data Type']==Data_type_choice)].unique())
+                
+                Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+                
+                if housing_choice == 'Household real income and consumption':
+                    
+                    data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Household segment', 'European Union segment', 'Data Type', 'Data', 'Values']]
+                    
+                    # display Housing segment 
+                    EU_segment = data['European Union segment'].loc[data['Household segment']==housing_choice].unique()
+                    EU_segment_choice = Data_filtering[1].selectbox("European Union Segment", options=EU_segment)
+                    
+                    # data type
+                    data_type = data['Data Type'].loc[data['European Union segment']==EU_segment_choice].unique()
+                    Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type, key=1)  
+                    
+                    # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+                    data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Household segment']==housing_choice) & (data['European Union segment']==EU_segment_choice) & (data['Data Type']==Data_type_choice)].unique())
 
-            # data type
-            data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
-            Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)      
+                    Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0)
+                    
+            if economic_segment_choice == 'Inflation data':
+
+                data = data[['Geography', 'Category', 'Series', 'Economic segment', 'Inflation Type', 'Data Type', 'Data', 'Values']] 
+
+                inflation_type_seg = data['Inflation Type'].loc[data['Economic segment']==economic_segment_choice].unique()
+                inflation_type_choice = Data_filtering[1].selectbox("Inflation Type", options=inflation_type_seg)
+
+                 # data type
+                data_type = data['Data Type'].loc[data['Inflation Type']==inflation_type_choice].unique()
+                Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)  
                 
-            data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==(inflation_type_choice)) & (data['Data Type']==(Data_type_choice))].unique())
-            
-            Trans_data=data.pivot_table(index='Date', columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)    
-            
-            
-    else:
-        
-        # Data type     
-        data_type = data['Data Type'].loc[data['Category']==(Category_choice)].unique()
-        Data_type_choice = Data_filtering[0].selectbox("Data Type", data_type)
-    
-        # Prepare the dataframe that will be used for other types of analysis
-        # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
-        data_col = list(data['Data'][(data['Country']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Data Type']==Data_type_choice)].unique())
-    
-    
-            
-   
-    
-        # the data to select from the dataframe - we want to select the values in the data column based on what we selected in the select data 
-        # Create a new table making columns from the data columns. Use pivot table because if we specify the value, it won't aggregate by mean or some other statistic method. 
-        Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
+                # Data filteration function - pass data into the function. Filter the data column according to the above choices (First set of choices)
+                data_col = list(data['Data'][(data['Geography']==Country_choice) & (data['Category']==Category_choice) & (data['Series']==Series_choice) & (data['Economic segment']==economic_segment_choice) & (data['Inflation Type']==inflation_type_choice) & (data['Data Type']==Data_type_choice)].unique())
+
+                Trans_data=data.pivot_table(index=['Date'], columns='Data', values='Values', aggfunc='first').rename_axis(None, axis=1)#.reindex(data['Date'].unique(), axis=0) 
     
     
     # data 2
@@ -805,9 +911,29 @@ elif choice_1 == "Data and Analysis":
                     # select x axis
                     select_box_X = axes_options[0].selectbox('Select x-axis', data_col)
                     #select y-axis
-                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col) 
+                    select_box_Y = axes_options[1].selectbox('Select y-axis', data_col)      
+                    
+                    
+                    X_boundary = Scatter_graph_data[select_box_X]
+                    Y_boundary = Scatter_graph_data[select_box_Y]
+                    
+                    #test_x = test1.min()
+                    
+                    X_boundary_min = X_boundary[X_boundary > 0.00001].min() - 0.005 
+                    Y_boundary_min = Y_boundary[Y_boundary > 0.00001].min() - 0.005
+                    X_boundary_max = X_boundary.max() + 0.004
+                    Y_boundary_max = Y_boundary.max() + 0.004
+                    
+                    # Y_boundary_min, X_boundary_min
+                    
+                    X_boundary_min = round(X_boundary_min,4)
+                    Y_boundary_min = round(Y_boundary_min,4)
+                    X_boundary_max = round(X_boundary_max,3)
+                    Y_boundary_max = round(Y_boundary_max,3)
                     
                     test = px.scatter(Scatter_graph_data, x=select_box_X, y=select_box_Y, height=650, width=900)
+                    test.update_layout(yaxis_range=[Y_boundary_min, Y_boundary_max],
+                                       xaxis_range=[X_boundary_min, X_boundary_max])
                     st.plotly_chart(test, use_container_width=True)
                     
                 else:
@@ -844,25 +970,43 @@ elif choice_1 == "Data and Analysis":
                     alpha = chart_options[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
                     # Default settings
                     #default_options = chart_options[3].button('Default', key=1)
+                    
+                    X_boundary = Scatter_graph_data[select_box_X]
+                    Y_boundary = Scatter_graph_data[select_box_Y]
+                    
+                    #test_x = test1.min()
+                    
+                    X_boundary_min = X_boundary[X_boundary > 0.00001].min() - 0.005 
+                    Y_boundary_min = Y_boundary[Y_boundary > 0.00001].min() - 0.005
+                    X_boundary_max = X_boundary.max() + 0.004
+                    Y_boundary_max = Y_boundary.max() + 0.004
+                    
+                    # Y_boundary_min, X_boundary_min
+                    
+                    X_boundary_min = round(X_boundary_min,4)
+                    Y_boundary_min = round(Y_boundary_min,4)
+                    X_boundary_max = round(X_boundary_max,3)
+                    Y_boundary_max = round(Y_boundary_max,3)
 
 
                     #ticks for margin plots
                     #margin_grid = chart_options[2].radio('Show grid for edge plots', ['True', 'False'])
 
                     sns.set_style(Background_colr)
-
+                    
                     chart = sns.jointplot(x=select_box_X, 
                                              y=select_box_Y, 
                                               data = Scatter_graph_data,
+                                              s=plots_size,
                                               alpha=alpha,
                                               height=height,  
                                               space=space, 
-                                              xlim=(-0.01,1.01), 
-                                              ylim=(-0.01,1.01),
+                                              xlim=(X_boundary_min,X_boundary_max), 
+                                              ylim=(Y_boundary_min,Y_boundary_max),
                                               color=color,
                                               marginal_kws={'color':edge_col_opt}) #, color=color) # hue=select_box_hue, s=select_box_size,  marginal_ticks=True)
 
-                    st.pyplot(chart, use_container_width=True)
+                    st.pyplot(chart, use_container_width=True)     
                 
                 Advanced_plots = st.beta_columns([4,4,3,3,5])
 
