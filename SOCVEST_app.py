@@ -1141,18 +1141,26 @@ elif choice_1 == "Data and Analysis":
                 histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
 
                 # Data to view
-                COVID_19_data_Hist = Trans_data[data_col]
+                COVID_19_data_Hist = Trans_data[histogram_data_selection]
+            
+                X_boundary_hist = Trans_data[histogram_data_selection]
+                                       
+                X_boundary_hist_min = X_boundary_hist[X_boundary_hist > 0.00001].min() - 0.005
+                
+                X_boundary_hist_min = round(X_boundary_hist_min,4)
+                    
+                
                 
                 if not horizontal_vertical == 'Vertical':
                     
                     f, ax = plt.subplots(figsize=(width,height)) 
                     sns.histplot(y=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
-                    ax.set_xlim(0)
+                    ax.set_xlim(X_boundary_hist_min)
                     st.pyplot()
                 else:
                     f, ax = plt.subplots(figsize=(width,height)) 
                     sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
-                    ax.set_xlim(0)
+                    ax.set_xlim(X_boundary_hist_min)
                     st.pyplot()
                        
 
