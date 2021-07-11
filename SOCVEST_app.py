@@ -1159,7 +1159,7 @@ elif choice_1 == "Data and Analysis":
                     st.pyplot()
                 else:
                     f, ax = plt.subplots(figsize=(width,height)) 
-                    sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
+                    sns.histplot(y=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
                     ax.set_xlim(X_boundary_hist_min)
                     st.pyplot()
                        
