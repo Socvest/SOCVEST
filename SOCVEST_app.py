@@ -646,7 +646,7 @@ if choice_1 =="About us":
     # st.title("SOCVEST")
     themes1 = st.beta_columns([1,3,1])
     
-    themes1[1].text("Bringing clarity to a world we used to gaze into")
+    themes1[1].text("Enabling the Data Driven Capabilities of the Retail Trader")
     #themes2.write("A partner to the retail investor")
     #themes3.write("Supporter of the retail investor")
     
