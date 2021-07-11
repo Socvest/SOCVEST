@@ -952,22 +952,22 @@ elif choice_1 == "Data and Analysis":
 
                     # Control dimensions of chart
                     color = ['navy', 'blue', 'green', 'brown', 'skyblue', 'grey', 'black', 'cornsilk'] 
-                    color = chart_options[0].selectbox('Choose chart color', options=color, key=1)
+                    color = chart_options[0].selectbox('Choose chart color', options=color, key="colour")
                     # Edge colors
                     edge_col = ['navy','red', 'blue']
                     edge_col_opt = chart_options[1].selectbox('Choose edge plots colour', options=edge_col)
                     # Height
-                    height = chart_options[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=11.5, key=1)
+                    height = chart_options[0].slider('Size of chart', min_value=0.0, max_value=30.0, step=.1, value=11.5, key="height")
                     # Ratio
                     #ratio_chart = chart_options[1].slider('Ratio', min_value=0, max_value=30, step=1, value=7, key=2)
                     # Space
-                    space = chart_options[1].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key=3)
+                    space = chart_options[1].slider('Distance main/edge plot', min_value=0.0, max_value=1.0, step=.1, value=.4, key="space")
                     
                     bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
                      # graph background colour
                     Background_colr = chart_options[2].selectbox('Choose Background Colour', options=bkc)
                     # Show cuts/shapes of plots
-                    alpha = chart_options[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key=4) 
+                    alpha = chart_options[2].slider('Plot density', min_value=0.0, max_value=1.0,  step=.1, value=.4, key="alpha") 
                     # Default settings
                     #default_options = chart_options[3].button('Default', key=1)
                     
