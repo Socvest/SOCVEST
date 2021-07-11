@@ -1141,7 +1141,7 @@ elif choice_1 == "Data and Analysis":
                 histogram_data_selection = data_choice[0].selectbox("Choose feature to observe", options=data_col)
 
                 # Data to view
-                COVID_19_data_Hist = Trans_data[histogram_data_selection]
+                COVID_19_data_Hist = Trans_data[data_col]
             
                 X_boundary_hist = Trans_data[histogram_data_selection]
                                        
