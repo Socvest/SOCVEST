@@ -641,12 +641,12 @@ if choice_1 =="About us":
     title2.title("SOCVEST")
     banner_picture = st.beta_columns(1)
     with banner_picture[0]:
-        st.image("Data/Front page/Socvest.jpg")
+        st.image("Data/Front page/Socvest.jpg", caption='Enabling the Data Driven Capabilities of the Retail Trader')
     
     # st.title("SOCVEST")
     themes1 = st.beta_columns([1,3,1])
     
-    themes1[1].text("Enabling the Data Driven Capabilities of the Retail Trader")
+    #themes1[1].text("Enabling the Data Driven Capabilities of the Retail Trader")
     #themes2.write("A partner to the retail investor")
     #themes3.write("Supporter of the retail investor")
     
