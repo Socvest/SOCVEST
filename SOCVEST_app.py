@@ -1143,24 +1143,25 @@ elif choice_1 == "Data and Analysis":
                 # Data to view
                 COVID_19_data_Hist = Trans_data[data_col]
             
-                X_boundary_hist = Trans_data[histogram_data_selection]
+                min_boundary_hist = Trans_data[histogram_data_selection]
+                max_boundary_hist = Trans_data[histogram_data_selection]
                                        
-                X_boundary_hist_min = X_boundary_hist[X_boundary_hist > 0.00001].min() - 0.005
+                min_boundary_hist = min_boundary_hist[min_boundary_hist > 0.00001].min() - 0.005
+                max_boundary_hist = max_boundary_hist.max() + 0.005
                 
-                X_boundary_hist_min = round(X_boundary_hist_min,4)
-                    
-                
+                min_boundary_hist = round(min_boundary_hist,4)
+                max_boundary_hist = round(max_boundary_hist,4)
                 
                 if not horizontal_vertical == 'Vertical':
                     
                     f, ax = plt.subplots(figsize=(width,height)) 
                     sns.histplot(y=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
-                    ax.set_xlim(X_boundary_hist_min)
+                    ax.set_xlim(min_boundary_hist, max_boundary_hist)
                     st.pyplot()
                 else:
                     f, ax = plt.subplots(figsize=(width,height)) 
-                    sns.histplot(y=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
-                    ax.set_xlim(X_boundary_hist_min)
+                    sns.histplot(x=histogram_data_selection, data=COVID_19_data_Hist, kde=KDE_plot, stat=count, fill=fill, element=element, cumulative=cumulative, color=colour) #, bins = histogram_slider, binwidth=bin_width, binrange=(bin_range_1,bin_range_2))
+                    ax.set_xlim(min_boundary_hist, max_boundary_hist)
                     st.pyplot()
                        
 
