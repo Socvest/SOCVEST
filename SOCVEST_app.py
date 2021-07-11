@@ -17,7 +17,10 @@ import urllib
 # for min_max scaling
 from sklearn.preprocessing import MinMaxScaler
 from streamlit.report_thread import get_report_ctx
-st.set_page_config(page_title='SOCVEST') #,layout="wide")
+from PIL import Image
+
+st.set_page_config(page_title='SOCVEST', page_icon =Image.open("img/page icon.png"))
+#st.set_page_config(page_title='SOCVEST') #,layout="wide")
 import datetime
 import calendar
 
