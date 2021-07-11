@@ -997,7 +997,6 @@ elif choice_1 == "Data and Analysis":
                     chart = sns.jointplot(x=select_box_X, 
                                              y=select_box_Y, 
                                               data = Scatter_graph_data,
-                                              s=plots_size,
                                               alpha=alpha,
                                               height=height,  
                                               space=space, 
@@ -1008,7 +1007,7 @@ elif choice_1 == "Data and Analysis":
 
                     st.pyplot(chart, use_container_width=True)     
                 
-                Advanced_plots = st.beta_columns([4,4,3,3,5])
+                #Advanced_plots = st.beta_columns([4,4,3,3,5])
 
                 # Correlation
         Correlation = Visualisation_segment.checkbox("Correlation")
