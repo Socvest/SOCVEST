@@ -610,7 +610,7 @@ def Heatmap_timeseries_index(data_to_analyse, Heatmap_dataframe_timeseries):
     return axis_data
 
 def Heatmap_chart(Data_to_select_indexed, data_to_analyse, y_axis, x_axis, colour, annot):
-    title = st.beta_columns([2,2])
+    title = st.columns([2,2])
     # Pivot table
     Pivot_data = Data_to_select_indexed.pivot_table(index=y_axis ,columns=x_axis, values=data_to_analyse).fillna(0)
     f, ax2 = plt.subplots(figsize=(16, 11))
@@ -637,14 +637,14 @@ if choice_1 =="About us":
    
     components.html(analytics_js, width=200, height=200) 
             
-    title1,title2,title3 = st.beta_columns(3)
+    title1,title2,title3 = st.columns(3)
     title2.title("SOCVEST")
-    banner_picture = st.beta_columns(1)
+    banner_picture = st.columns(1)
     with banner_picture[0]:
         st.image("Data/Front page/Socvest.jpg", caption='Enabling the Data Driven Capabilities of the Retail Trader')
     
     # st.title("SOCVEST")
-    themes1 = st.beta_columns([1,3,1])
+    themes1 = st.columns([1,3,1])
     
     #themes1[1].text("Enabling the Data Driven Capabilities of the Retail Trader")
     #themes2.write("A partner to the retail investor")
@@ -676,13 +676,13 @@ elif choice_1 == "Data and Analysis":
         with st.beta_expander("Choose Data"):
             st.write("Choose data unique to a country for this theme.")
             # Create labels to slot filtering sections
-            Data_filtering = st.beta_columns(3)
+            Data_filtering = st.columns(3)
             # define data to be used for this section
             # Get the select boxes that will be used for filtering the data. Load the filtered data and the pivoted datatable
             data_col, Trans_data, data_type = Filter_COVID_Timeseries_Data(Data_filtering)
             
             # create new labels for hide data
-            data_mix_buttons = st.beta_columns([3,1,1])
+            data_mix_buttons = st.columns([3,1,1])
             # We use this to hide or show the data
             Hide_data = data_mix_buttons[2].checkbox("Hide Data", value=True) # default
             #read_state('size',engine,session_id)
@@ -723,7 +723,7 @@ elif choice_1 == "Data and Analysis":
             with show_line_chart:               
                                 
                 # new label for line chart options
-                line_chart_options = st.beta_columns(3)
+                line_chart_options = st.columns(3)
                 
                 # Choose to show one data point per time or multiple at once to compare
                 type_of_chart_to_view = line_chart_options[2].selectbox("Chart Type", options=['Compare Variables', 'Single Variable View'])
@@ -839,7 +839,7 @@ elif choice_1 == "Data and Analysis":
                 Heatmap_dataframe_timeseries = Trans_data[data_to_analyse]
                 
                 # new label for line chart options
-                Axis_data = st.beta_columns([3,3,3,3])   
+                Axis_data = st.columns([3,3,3,3])   
                 
                 Data_to_select_indexed = Heatmap_Timeseries_data_prep(data_to_analyse, Heatmap_dataframe_timeseries) 
                 
@@ -908,8 +908,8 @@ elif choice_1 == "Data and Analysis":
                 
                 if type_chart == 'Simple Chart':
                     
-                    axes_options = st.beta_columns(2)
-                    chart_d = st.beta_columns(1)
+                    axes_options = st.columns(2)
+                    chart_d = st.columns(1)
                     
                     # select x axis
                     select_box_X = axes_options[0].selectbox('Select x-axis', data_col)
@@ -942,9 +942,9 @@ elif choice_1 == "Data and Analysis":
                 else:
                     
                     
-                    chart_options = st.beta_columns(3)
-                    axes_options = st.beta_columns(2)
-                    chart_d = st.beta_columns(1)
+                    chart_options = st.columns(3)
+                    axes_options = st.columns(2)
+                    chart_d = st.columns(1)
 
 
                     # Create an empty space to replace contents into
@@ -1010,7 +1010,7 @@ elif choice_1 == "Data and Analysis":
 
                     st.pyplot(chart, use_container_width=True)     
                 
-                #Advanced_plots = st.beta_columns([4,4,3,3,5])
+                #Advanced_plots = st.columns([4,4,3,3,5])
 
                 # Correlation
         Correlation = Visualisation_segment.checkbox("Correlation")
@@ -1022,7 +1022,7 @@ elif choice_1 == "Data and Analysis":
             with show_scatter_chart:
                 
                 # labels
-                Chart_options_heatmap = st.beta_columns(4) 
+                Chart_options_heatmap = st.columns(4) 
     
                 # Colours
                 colours = ['Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r', 'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Greens', 'Greens_r', 'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r', 'PRGn', 'PRGn_r', 'Paired', 'Paired_r', 'Pastel1', 'Pastel1_r', 'Pastel2', 'Pastel2_r', 'PiYG', 'PiYG_r', 'PuBu', 'PuBuGn', 'PuBuGn_r', 'PuBu_r', 'PuOr', 'PuOr_r', 'PuRd', 'PuRd_r', 'Purples', 'Purples_r', 'RdBu', 'RdBu_r', 'RdGy', 'RdGy_r', 'RdPu', 'RdPu_r', 'RdYlBu', 'RdYlBu_r', 'RdYlGn', 'RdYlGn_r', 'Reds', 'Reds_r', 'Set1', 'Set1_r', 'Set2', 'Set2_r', 'Set3', 'Set3_r', 'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'YlGn', 'YlGnBu', 'YlGnBu_r', 'YlGn_r', 'YlOrBr', 'YlOrBr_r', 'YlOrRd', 'YlOrRd_r', 'afmhot', 'afmhot_r', 'autumn', 'autumn_r', 'binary', 'binary_r', 'bone', 'bone_r', 'brg', 'brg_r', 'bwr', 'bwr_r', 'cividis', 'cividis_r', 'cool', 'cool_r', 'coolwarm', 'coolwarm_r', 'copper', 'copper_r', 'crest', 'crest_r', 'cubehelix', 'cubehelix_r', 'flag', 'flag_r', 'flare', 'flare_r', 'gist_earth', 'gist_earth_r', 'gist_gray', 'gist_gray_r', 'gist_heat', 'gist_heat_r', 'gist_ncar', 'gist_ncar_r', 'gist_rainbow', 'gist_rainbow_r', 'gist_stern', 'gist_stern_r', 'gist_yarg', 'gist_yarg_r', 'gnuplot', 'gnuplot2', 'gnuplot2_r', 'gnuplot_r', 'gray', 'gray_r', 'hot', 'hot_r', 'hsv', 'hsv_r', 'icefire', 'icefire_r', 'inferno', 'inferno_r', 'jet', 'jet_r', 'magma', 'magma_r', 'mako', 'mako_r', 'nipy_spectral', 'nipy_spectral_r', 'ocean', 'ocean_r', 'pink', 'pink_r', 'plasma', 'plasma_r', 'prism', 'prism_r', 'rainbow', 'rainbow_r', 'rocket', 'rocket_r', 'seismic', 'seismic_r', 'spring', 'spring_r', 'summer', 'summer_r', 'tab10', 'tab10_r', 'tab20', 'tab20_r', 'tab20b', 'tab20b_r', 'tab20c', 'tab20c_r', 'terrain', 'terrain_r', 'turbo', 'turbo_r', 'twilight', 'twilight_r', 'twilight_shifted', 'twilight_shifted_r', 'viridis', 'viridis_r', 'vlag', 'vlag_r', 'winter', 'winter_r']
@@ -1110,9 +1110,9 @@ elif choice_1 == "Data and Analysis":
             with show_Histogram_chart:
                 
                 # columns for flexible options
-                Hist_options = st.beta_columns(3)
-                Hist_options1 = st.beta_columns(4)
-                data_choice = st.beta_columns(1)
+                Hist_options = st.columns(3)
+                Hist_options1 = st.columns(4)
+                data_choice = st.columns(1)
                 
                 bkc = ['darkgrid', 'whitegrid', 'dark', 'white']
                 # graph background colour
