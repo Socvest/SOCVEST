@@ -673,7 +673,7 @@ elif choice_1 == "Data and Analysis":
         title = 'COVID-19'
         st.subheader(title)
         # Create expander to view/choose data
-        with st.beta_expander("Choose Data"):
+        with st.expander("Choose Data"):
             st.write("Choose data unique to a country for this theme.")
             # Create labels to slot filtering sections
             Data_filtering = st.columns(3)
@@ -708,7 +708,7 @@ elif choice_1 == "Data and Analysis":
         # CHARTS
         st.sidebar.title("Visualisation")
         # Show charts for selected data
-        Visualisation_segment = st.sidebar.beta_expander("Choose Visualisation Method")
+        Visualisation_segment = st.sidebar.expander("Choose Visualisation Method")
         # The opportunity to select visualisation type
         # Label timeseries
         Visualisation_segment.subheader("Timeseries")
@@ -718,7 +718,7 @@ elif choice_1 == "Data and Analysis":
         if line_chart:
             # subtitle
             st.subheader("Line Chart Visualisation")
-            show_line_chart = st.beta_expander("Show Chart")
+            show_line_chart = st.expander("Show Chart")
             # if the show line chart shows
             with show_line_chart:               
                                 
@@ -830,7 +830,7 @@ elif choice_1 == "Data and Analysis":
         
             st.subheader("Timeseries Heatmap")
 
-            Show_heatmap_times = st.beta_expander("Show Chart")
+            Show_heatmap_times = st.expander("Show Chart")
             with Show_heatmap_times:  
             
                 # Data to select
@@ -866,7 +866,7 @@ elif choice_1 == "Data and Analysis":
         if bar_chart == True:
             st.subheader("Bar Chart")
             
-            bar_chart_section = st.beta_expander("Show Chart")
+            bar_chart_section = st.expander("Show Chart")
             
             with bar_chart_section:
                 # Data to select
@@ -889,7 +889,7 @@ elif choice_1 == "Data and Analysis":
             # Title indicating this is a timeseries
             st.subheader("Scatter Chart")
             
-            Relationship_charts = st.beta_expander("Show Charts")
+            Relationship_charts = st.expander("Show Charts")
             with Relationship_charts: 
                  
                 st.write("*Note that data has been scaled to allow for better ploting outcomes")
@@ -1017,7 +1017,7 @@ elif choice_1 == "Data and Analysis":
         if Correlation:
             # subtitle
             st.subheader("Correlation Chart ")
-            show_scatter_chart = st.beta_expander("Show Chart")
+            show_scatter_chart = st.expander("Show Chart")
             #Show_corr = st.checkbox("Show Correlation Diagram")
             with show_scatter_chart:
                 
@@ -1105,7 +1105,7 @@ elif choice_1 == "Data and Analysis":
         if Histogram_chart:
             # Histogram subtitle
             st.subheader("Histogram Chart Visualisation")
-            show_Histogram_chart = st.beta_expander("Show Chart")
+            show_Histogram_chart = st.expander("Show Chart")
             # if you choose Scatter Plot
             with show_Histogram_chart:
                 
