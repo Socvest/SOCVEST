@@ -1,6 +1,4 @@
-### Summary 
-This is just the alpha of the project
-
+### Just some things I thought were interesting
 <!--
 **Socvest/SOCVEST** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
